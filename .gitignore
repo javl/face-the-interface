@@ -1,0 +1,7 @@
+src_backup
+obj
+bin/libmodex.so
+bin/magicmirror_v3
+bin/data/shape_predictor_68_face_landmarks.dat
+/bin/libfmodex.so
+/openFrameworks.sublime-workspace
