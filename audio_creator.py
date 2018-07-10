@@ -18,15 +18,17 @@ add_hash = True
 # BACKUP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror/src_backup/ofApp.cpp'
 # AUDIO_PATH = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror/bin/data/audio'
 CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror_v3/src/ofApp.cpp'
-BACKUP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror_v3/src_backup/ofApp.cpp'
+# CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror_v3/convert.cpp'
+
+# BACKUP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror_v3/src_backup/ofApp.cpp'
 AUDIO_PATH = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror_v3/bin/data/audio'
 
 with open(CPP_FILE) as f:
     original_lines = f.read().splitlines()
 
-fo = open("{}.bk.{}".format(BACKUP_FILE, int(time.time())), "w+")
-fo.write("\n".join(original_lines))
-fo.close()
+# fo = open("{}.bk.{}".format(BACKUP_FILE, int(time.time())), "w+")
+# fo.write("\n".join(original_lines))
+# fo.close()
 
 counter = 1
 found_lines = []

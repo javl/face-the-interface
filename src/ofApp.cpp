@@ -2,6 +2,7 @@
 
 #define IDLE 0
 #define LOST 999
+#define DONE 1000
 
 #define INTRO_1 1
 #define INTRO_2 2
@@ -46,6 +47,8 @@
 #define PATH_3_10 310
 #define PATH_3_11 311
 #define PATH_3_12 312
+
+
 
 #include "RtAudio.h" // necessary
 //--------------------------------------------------------------
@@ -95,8 +98,8 @@ void ofApp::setup(){
 
     // used for expressions
     learned_functions = vector<pfunct_type>(4);
-    dlib::deserialize(ofToDataPath("data_ecstatic_smile.func")) >> learned_functions[0];
-    dlib::deserialize(ofToDataPath("data_small_smile.func")) >> learned_functions[1];
+    dlib::deserialize(ofToDataPath("expressions/data_ecstatic_smile.func")) >> learned_functions[0];
+    dlib::deserialize(ofToDataPath("expressions/data_small_smile.func")) >> learned_functions[1];
     bigSmileValue.setFc(0.04);
     smallSmileValue.setFc(0.04);
 
@@ -146,98 +149,47 @@ void ofApp::update(){
     checkWait(); // see if a timer has expired and we want to move to the next (sub)state
 
     switch (state){
-        // default:
-        // case IDLE:
-        //     if (substate == 0 && !voice.isPlaying()){
-        //         float r = ofRandomuf();
-        //         if(r < 0.005){
-        //             //say Hello?
-        //             playAudio("hello_dedd3af5.mp3");
-        //         }else if (r<0.01){
-        //             //say Is anyone there?
-        //             playAudio("is-anyone-there_1f6c9463.mp3");
-        //         }
-        //     }
-        //     if(substate != 0){
-        //         substate = 0;
-        //     }
-        //     break;
+        default:
+        case IDLE:
+        break;
+        case LOST:
+        break;
+        case DONE:
+            if(substate == 0 && !voice.isPlaying()){
+                //say human
+                nextSubstate();
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
 
-        // case LOST:
-        //     if (substate == 0 && !voice.isPlaying()){
-        //         //say I lost you
-        //         playAudio("i-lost-you_13bfe904.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 1 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 2 && !voice.isPlaying()){
-        //         //say Where did you go?
-        //         playAudio("where-did-you-go_10bc30c8.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 3 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 4 && !voice.isPlaying()){
-        //         //say I can't seem to find your face
-        //         playAudio("i-cant-seem-to-find-your-face_81a30239.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 5 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 6 && !voice.isPlaying()){
-        //         //say If you don't come back, I will have to reset myself
-        //         playAudio("if-you-dont-come-back-i-will-have-to-reset-myself_b936d779.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 7 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 8 && !voice.isPlaying()){
-        //         //say Reset in 10 seconds
-        //         playAudio("reset-in-10-seconds_ac2ffa0c.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 9 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 10 && !voice.isPlaying()){
-        //         //say three
-        //         playAudio("three_35d6d334.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 11 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 12 && !voice.isPlaying()){
-        //         //say two
-        //         playAudio("two_b8a9f715.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 13 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 14 && !voice.isPlaying()){
-        //         //say one
-        //         playAudio("one_f97c5d29.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 15 && !voice.isPlaying()){
-        //         queueNextSubstate(2000);
-        //     }
-        //     if (substate == 16 && !voice.isPlaying()){
-        //         //say goodbye
-        //         playAudio("goodbye_69faab62.mp3");
-        //         nextSubstate();
-        //     }
-        //     if (substate == 17 && !voice.isPlaying()){
-        //         state = IDLE;
-        //         substate = 0;
-        //     }
-        //     break;
+            else if(substate == 0 && !voice.isPlaying()){
+                //say Your reflection has been recorded.
+                nextSubstate();
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if(substate == 0 && !voice.isPlaying()){
+                // Thanks to your contributed data I will be able to identify faces more accurately.
+                nextSubstate();
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if(substate == 0 && !voice.isPlaying()){
+                //say Thank you!
+                nextSubstate();
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if(substate == 0 && !voice.isPlaying()){
+                nextSubstate();
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+        break;
 
 //==================================================================================================
 //==================================================================================================
@@ -347,367 +299,276 @@ void ofApp::update(){
 
 //==================================================================================================
         case INTRO_2:
-                ofLog() << "small: " << smallSmileValue.value();
-                ofLog() << "big: " << bigSmileValue.value();
             if (substate == 0 && !voice.isPlaying()){
-                //say smile
-                playAudio("smile_3ddaeb82.mp3");
+                //say Calibrating face data, please smile.
+                playAudio("calibrating-face-data-please-smile_eccec926.mp3");
                 nextSubstate();
-
             }
             else if (substate == 1 && !voice.isPlaying()){
-                queueNextSubstate(1000);
-            }
-            else if (substate == 2 && !voice.isPlaying()){
-                //say or like humans say, cheese
-                playAudio("or-like-humans-say-cheese_9588b0e7.mp3");
-                nextSubstate();
-            }
-            else if (substate == 3 && !voice.isPlaying()){
+                // showing expression bars
                 queueNextSubstate(6000);
             }
-            else if (substate == 4){
+            else if (substate == 2 && !voice.isPlaying()){
                 takeSneakyImage();
                 if (smallSmileValue.value() > 0.7 || bigSmileValue.value() > 0.7){
                     wasSmiling = true;
                 }else{
                     wasSmiling = false;
                 }
-                nextState();
+                nextSubstate();
+            }
+            else if (substate == 3 && !voice.isPlaying()){
+                if(wasSmiling){
+                    //say Really?
+                    playAudio("really_e02f73c2.mp3");
+                } else {
+                    //say Your smile is hard to read.
+                    playAudio("your-smile-is-hard-to-read_b433736f.mp3");
+                }
+                nextSubstate();
+            }else if (substate == 4 && !voice.isPlaying()){
+                if(wasSmiling){
+                    //say People don't take you seriously when you smile.
+                    playAudio("people-dont-take-you-seriously-when-you-smile_beb3fa8a.mp3");
+                }else{
+                    //say Your interface is expressionless.
+                    playAudio("your-interface-is-expressionless_f26381ca.mp3");
+                }
+                nextSubstate();
+            }
+            else if (substate == 5 && !voice.isPlaying()){
+                queueNextState(2000);
             }
             break;
 
 //==================================================================================================
         case INTRO_3:
-                if (substate == 0 && !voice.isPlaying()){
-                    if(wasSmiling){
-                        //say Are you serious?
-                        playAudio("are-you-serious_abc57727.mp3");
-                    } else {
-                        //say Your smile is hard to read.
-                        playAudio("your-smile-is-hard-to-read_b433736f.mp3");
-                    }
-                    nextSubstate();
-                }else if (substate == 1 && !voice.isPlaying()){
-                    if(wasSmiling){
-                        //say People don't take you seriously when you smile.
-                        playAudio("people-dont-take-you-seriously-when-you-smile_beb3fa8a.mp3");
-                    }else{
-                        //say Are you really happy?
-                        playAudio("are-you-really-happy_cf89386d.mp3");
-                    }
-                    nextSubstate();
-                }
-                else if (substate == 2 && !voice.isPlaying()){
-                    queueNextState(2000);
-                }
-                break;
-
-//==================================================================================================
-        case INTRO_4:
             if (substate == 0 && !voice.isPlaying()){
-                //say breathe
-                playAudio("breathe_f328976d.mp3");
+                //say Calibration complete. Starting session.
+                playAudio("calibration-complete-starting-session_11fcaf98.mp3");
                 nextSubstate();
-            }
-            else if (substate == 1 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 2 && !voice.isPlaying()){
+            }else if (substate == 1 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+
+            }else if (substate == 2 && !voice.isPlaying()){
+                //say breath
+                playAudio("breath_dbd782e4.mp3");
+                nextSubstate();
+
+            } else if (substate == 3 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+
+            }else if (substate == 4 && !voice.isPlaying()){
                 //say Slow down for a moment
                 playAudio("slow-down-for-a-moment_c5a106c1.mp3");
                 nextSubstate();
+
+            } else if (substate == 5 && !voice.isPlaying()){
+                queueNextSubstate(1000);
             }
-            else if (substate == 3 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 4 && !voice.isPlaying()){
-                //say Be aware of your body.
-                playAudio("be-aware-of-your-body_05d8a577.mp3");
+
+            }else if (substate == 6 && !voice.isPlaying()){
+                //say Be aware of your body
+                playAudio("be-aware-of-your-body_24329638.mp3");
                 nextSubstate();
+
+            } else if (substate == 7 && !voice.isPlaying()){
+                queueNextSubstate(1000);
             }
-            else if (substate == 5 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 6 && !voice.isPlaying()){
+
+            }else if (substate == 8 && !voice.isPlaying()){
                 //say Relax your algorithm
                 playAudio("relax-your-algorithm_c77c81a8.mp3");
                 nextSubstate();
-            }
-            else if (substate == 7 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 8 && !voice.isPlaying()){
-                //     smiling: path 2 or 3
-                if(wasSmiling){
-                    usePath3 ? state = PATH_3_1 : state = PATH_2_1;
-                    usePath3 = !usePath3;
-                }else{
-                    usePath3 ? state = PATH_3_1 : state = PATH_1_1;
-                    usePath3 = !usePath3;
-                }
-                substate = 0;
-                // nextState(); // no need for nextState() as we have set the next state manually
+
+            } else if (substate == 9 && !voice.isPlaying()){
+                queueNextState();
             }
             break;
+
 
 
 //==================================================================================================
 //==================================================================================================
         case PATH_1_1:
-            if (substate == 0 && !voice.isPlaying()){
-                //say Starting path one
-                playAudio("starting-path-one_85b7b0e6.mp3");
-                nextSubstate();
-            }
-            else if (substate == 1 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 2 && !voice.isPlaying()){
-                //say Now, close your eyes.
-                playAudio("now-close-your-eyes_5bf7f9c4.mp3");
-                nextSubstate();
-            }
-            else if (substate == 3 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 4 && !voice.isPlaying()){
-                //say Are they closed?
-                playAudio("are-they-closed_6f751e96.mp3");
-                nextSubstate();
-            }
-            else if (substate == 5 && !voice.isPlaying()){
-                queueNextSubstate(1000);
-            }
-            else if (substate == 6 && !voice.isPlaying()){
-                //say Listen to this.
-                playAudio("listen-to-this_f574fc76.mp3");
-                nextSubstate();
-            }
-            else if (substate == 7 && !voice.isPlaying()){
-                queueNextSubstate(2000);
-            }
-            else if (substate == 8 && !voice.isPlaying()){
-                //say I’m Viola Jones.
-                playAudio("im-viola-jones_0a71e06b.mp3");
-                nextSubstate();
-            }
-            else if (substate == 9 && !voice.isPlaying()){
-                queueNextSubstate(500);
-            }
-            else if (substate == 10 && !voice.isPlaying()){
-                //say I work in the field of biometric recognition.
-                playAudio("i-work-in-the-field-of-biometric-recognition_76ba4d3a.mp3");
-                nextSubstate();
-            }
-            else if (substate == 11 && !voice.isPlaying()){
-                queueNextSubstate(1000);
-            }
-            else if (substate == 12 && !voice.isPlaying()){
-                //say Identification extracting the landmarks of your face.
-                playAudio("identification-extracting-the-landmarks-of-your-face_afc6ad50.mp3");
-                nextSubstate();
-            }
-            else if (substate == 13 && !voice.isPlaying()){
-                queueNextSubstate(1000);
-            }
-            else if (substate == 14 && !voice.isPlaying()){
-                //say Nose, cheekbones, eyes.
-                playAudio("nose-cheekbones-eyes_a105c3d8.mp3");
-                video.load("video/interfaceFalls.mp4");
-                nextSubstate();
-            }
-            else if (substate == 15 && !voice.isPlaying()){
-                playAudioFile("prerecorded/compressing-face-data.mp3");
-                video.setLoopState(OF_LOOP_NONE);
-                video.setSpeed(1.0);
-                video.play();
-                nextSubstate();
-            }
-            else if (substate == 16 && video.getPosition() == 1.0){
-                video.close();
-                nextSubstate();
-            }
-            else if (substate == 17 && !video.isPlaying() && !voice.isPlaying()){
-                //say Whoops, sorry about that.
-                playAudio("whoops-sorry-about-that_f7bf24e2.mp3");
-                video.close();
-                r = ofRandomuf();
-                r2 = ofRandomuf();
-                nextSubstate();
-            }
-            else if (substate == 18 && !voice.isPlaying()){
-                queueNextState(500);
-            }
-            else if (substate == 19 && !voice.isPlaying()){
-                //say My mistake.
-                playAudio("my-mistake_be08c962.mp3");
-                nextSubstate();
-            }
-            else if (substate == 20 && !voice.isPlaying()){
-                //say You are just so interesting to me.
-                playAudio("you-are-just-so-interesting-to-me_c7ad14f4.mp3");
-                nextSubstate();
-            }
-            else if (substate == 21 && !voice.isPlaying()){
-                queueNextState(1000);
-            }
-
+            // video van Anja
             break;
 //==================================================================================================
         case PATH_1_2:
             if (substate == 0 && !voice.isPlaying()){
-                //say I don't have a face
-                playAudio("i-dont-have-a-face_f3e7a7c7.mp3");
-                nextSubstate();
+                //say Calculating recent interactions in public space.
+                playAudio("calculating-recent-interactions-in-public-space_84dc5d1b.mp3");
+                nextSubstate
             }
             else if (substate == 1 && !voice.isPlaying()){
-                //say My interface is expressionless.
-                playAudio("my-interface-is-expressionless_bd3fcb32.mp3");
-                nextSubstate();
+                queueNextSubstate(2000);
             }
+
             else if (substate == 2 && !voice.isPlaying()){
-                //say What's it like/
-                playAudio("whats-it-like_2b450b07.mp3");
+                //say Loading: Behaviors in shops, supermarkets, government offices, the public domain.
+                playAudio("loading-behaviors-in-shops-supermarkets-government-offices-the-p_72b66055.mp3");
                 nextSubstate();
             }
             else if (substate == 3 && !voice.isPlaying()){
-                //say Swipe your sight clean
-                playAudio("swipe-your-sight-clean_0634a5af.mp3");
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 4 && !voice.isPlaying()){
+                //say People like your are likely to show
+                playAudio("people-like-your-are-likely-to-show_c22e8f34.mp3");
+                nextSubstate();
+            }
+            else if (substate == 5 && !voice.isPlaying()){
+                //say deviant
+                playAudio("deviant_481dd6e8.mp3");
+                nextSubstate();
+            }
+            else if (substate == 6 && !voice.isPlaying()){
+                //say behavior
+                playAudio("behavior_b140af3d.mp3");
                 nextState();
             }
             break;
 //==================================================================================================
         case PATH_1_3:
             if (substate == 0 && !voice.isPlaying()){
-                //say Calculating: Interactions in public space this week.
-                playAudio("calculating-interactions-in-public-space-this-week_2decd20b.mp3");
-                nextSubstate();
+                //say Faces like yours are likely to commit crimes.
+                playAudio("faces-like-yours-are-likely-to-commit-crimes_0a38818a.mp3");
+                queueNextSubstate(1000);
             }
             else if (substate == 1 && !voice.isPlaying()){
-                //say Loading: Behaviors in shops, supermarkets, government offices, the public domain.
-                playAudio("loading-behaviors-in-shops-supermarkets-government-offices-the-p_72b66055.mp3");
+                nextSubstate()
+            }
+
+            else if (substate == 2 && !voice.isPlaying()){
+                //say Have you ever done something illegal?
+                playAudio("have-you-ever-done-something-illegal_0f153ac7.mp3");
+                queueNextSubstate(1000);
+            }
+            else if (substate == 3 && !voice.isPlaying()){
+                nextSubstate()
+            }
+
+            else if (substate == 4 && !voice.isPlaying()){
+                //say Reviewing
+                playAudio("reviewing_4827b311.mp3");
+                queueNextSubstate(1000);
+            }
+            else if (substate == 5 && !voice.isPlaying()){
+                nextSubstate()
+                r = 2 + ofRandom(4);
+            }
+
+            else if (substate == 6 && !voice.isPlaying()){
+                playNumber(int(r));
                 nextSubstate();
             }
-            else if (substate == 2 && !voice.isPlaying()){
-                //say Loading: People like you are likely to
-                playAudio("loading-people-like-you-are-likely-to_93dff963.mp3");
+            else if (substate == 7 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 8 && !voice.isPlaying()){
+                //say cases
+                playAudio("cases_c78bd47f.mp3");
+                nextSubstate();
+            }
+            else if (substate == 9 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 10 && !voice.isPlaying()){
+                //say Do you think you can be trusted?
+                playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
+                nextSubstate();
+            }
+            else if (substate == 11 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 12 && !voice.isPlaying()){
+                //say Your moral score based on social associations is:
+                playAudio("your-moral-score-based-on-social-associations-is_f08fe98a.mp3");
                 r = ofRandomuf();
                 nextSubstate();
             }
-            else if (substate == 3 && !voice.isPlaying()){
+            else if (substate == 13 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 14 && !voice.isPlaying()){
+                playNumber(int(r * 100));
+                r = ofRandomuf();
+                nextSubstate();
+            }
+            else if (substate == 15 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 16 && !voice.isPlaying()){
+                //say Hence your
+                playAudio("hence-your_ffe5ebe8.mp3");
+                r = ofRandomuf();
+                nextSubstate();
+            }
+            else if (substate == 17 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 18 && !voice.isPlaying()){
                 if(r < 0.33){
-                    //say be successful
-                    playAudio("be-successful_a84f1f76.mp3");
+                    //say poor
+                    playAudio("poor_5cffaf93.mp3");
                 }else if(r < 0.66){
-                    //say show deviant behavior
-                    playAudio("show-deviant-behavior_70bea211.mp3");
-                }else{
-                    //say vote for populist parties
-                    playAudio("vote-for-populist-parties_9fbd8bcb.mp3");
+                    //say mediocre
+                    playAudio("mediocre_a741acb6.mp3");
+                }else {
+                    //say positive
+                    playAudio("positive_82082716.mp3");
                 }
                 nextSubstate();
             }
-            else if (substate == 4 && !voice.isPlaying()){
-                queueNextState(2000);
+            else if (substate == 19 && !voice.isPlaying()){
+                queueNextSubstate(4000)
             }
+
+            else if (substate == 20 && !voice.isPlaying()){
+                //say reflection
+                playAudio("reflection_40f3468c.mp3");
+                nextSubstate();
+            }
+            else if (substate == 21 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 22 && !voice.isPlaying()){
+                r = ofRandomuf();
+                //say Your friends have an average moral score of:
+                playAudio("your-friends-have-an-average-moral-score-of_51a43800.mp3");
+                nextSubstate();
+            }
+            else if (substate == 23 && !voice.isPlaying()){
+                queueNextSubstate(4000)
+            }
+
+            else if (substate == 24 && !voice.isPlaying()){
+                playNumber(int(r*100));
+                nextSubstate();
+            }
+            else if (substate == 25 && !voice.isPlaying()){
+                queueNextState(4000)
+            }
+
             break;
 //==================================================================================================
         case PATH_1_4:
-        if (substate == 0 && !voice.isPlaying()){
-            //say Faces like yours are likely to commit crimes.
-            playAudio("faces-like-yours-are-likely-to-commit-crimes_0a38818a.mp3");
-            nextSubstate();
-        }
-        else if (substate == 1 && !voice.isPlaying()){
-            //say Have you ever done something illegal?
-            playAudio("have-you-ever-done-something-illegal_0f153ac7.mp3");
-            nextSubstate();
-        }
-        else if (substate == 2 && !voice.isPlaying()){
-            //say Reviewing
-            playAudio("reviewing_4827b311.mp3");
-            r = 2.0 + ofRandom(5);
-            nextSubstate();
-        }
-        else if (substate == 3 && !voice.isPlaying()){
-            playNumber(int(r));
-            nextSubstate();
-        }
-        else if (substate == 4 && !voice.isPlaying()){
-            //say cases
-            playAudio("cases_c78bd47f.mp3");
-            nextSubstate();
-        }
-        else if (substate == 5 && !voice.isPlaying()){
-            //say Do you think you can be trusted?
-            playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
-            nextSubstate();
-        }
-        else if (substate == 6 && !voice.isPlaying()){
-            //say Lets see
-            playAudio("lets-see_f2cc1925.mp3");
-            nextSubstate();
-        }
-        else if (substate == 7 && !voice.isPlaying()){
-            //say Your friends have an average moral score of:
-            playAudio("your-friends-have-an-average-moral-score-of_51a43800.mp3");
-            r = 20 + ofRandom(50);
-            nextSubstate();
-        }
-        else if (substate == 8 && !voice.isPlaying()){
-            playNumber(int(r));
-            nextSubstate();
-        }
-        else if (substate == 9 && !voice.isPlaying()){
-            //say percent
-            playAudio("percent_354f047b.mp3");
-            nextSubstate();
-        }
-        else if (substate == 10 && !voice.isPlaying()){
-            //say You didn't expect that, did you?
-            playAudio("you-didnt-expect-that-did-you_3d22ed22.mp3");
-            nextState();
-        }
-            // if (substate == 11 && !voice.isPlaying()) {
-            //     if(r < 0.5){
-            //     }else{
-            //     }
-            //     nextSubstate();
-            // }
-            // else if (substate == 12 && !voice.isPlaying()) {
-            //     if(r2 < 0.33){
-            //         //say I lost focus for a moment
-            //         playAudio("i-lost-focus-for-a-moment_6156eb7d.mp3");
-            //     }else if(r2 < 0.66){
-            //         //say I’m just a simple bot.
-            //         playAudio("im-just-a-simple-bot_d3e3abd6.mp3");
-            //     }else{
-            //         //say Sometimes I’m a bit slow
-            //         playAudio("sometimes-im-a-bit-slow_aecbb9eb.mp3");
-            //     }
-            //     nextSubstate();
-            // }
-            // else if (substate == 13 && !voice.isPlaying()){
-            //     queueNextSubstate(2000);
-            // }
-            // else if (substate == 14 && !voice.isPlaying()) {
-            //     if(r2 < 0.33){
-            //         //say I wish I were as complex as you.
-            //         playAudio("i-wish-i-were-as-complex-as-you_c9e7aa17.mp3");
-            //     }else if(r2 < 0.66){
-            //         //say I wish I were as flexible as you.
-            //         playAudio("i-wish-i-were-as-flexible-as-you_2d9f8cbc.mp3");
-            //     }else{
-            //         //say I wish I were as human as you.
-            //         playAudio("i-wish-i-were-as-human-as-you_9a00773c.mp3");
-            //     }
-            //     nextSubstate();
-            // }
-            // else if (substate == 15 && !voice.isPlaying()){
-            //     queueNextSubstate(2000);
-            // }
+            // interface falls, screenshot in background and some live data
             break;
+
+        case PATH_1_5:
+            // video van anja
+            // toon eerder genomen foto
+            state = DONE;
+        break;
 
 //==================================================================================================
         // case PATH_1_5:
@@ -1042,12 +903,20 @@ void ofApp::update(){
         case PATH_2_1:
             if (substate == 0 && !voice.isPlaying()){
                 //say Starting path two
-                playAudio("starting-path-two_2f5952bb.mp3");
                 nextSubstate();
             }
             else if (substate == 1 && !voice.isPlaying()){
                 queueNextState(2000);
             }
+
+            else if (substate == 0 && !voice.isPlaying()){
+                //say Starting path two
+                nextSubstate();
+            }
+            else if (substate == 1 && !voice.isPlaying()){
+                queueNextState(2000);
+            }
+
             break;
 //==================================================================================================
         case PATH_2_2:
