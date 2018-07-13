@@ -1,0 +1,5 @@
+git clone https://github.com/javl/ofxTimer.git
+git clone https://github.com/javl/ofxFaceTracker2.git
+git clone https://github.com/bakercp/ofxDlib.git
+git clone https://github.com/kylemcdonald/ofxCv.git
+git clone https://github.com/dzlonline/ofxBiquadFilter.git
