@@ -6,3 +6,4 @@ bin/data/shape_predictor_68_face_landmarks.dat
 /bin/libfmodex.so
 /openFrameworks.sublime-workspace
 /bin/data/new_audio/*
+/bin/magicmirror_v3.app

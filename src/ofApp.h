@@ -3,9 +3,9 @@
 #include "ofMain.h"
 // #include "ofxOpenCv.h"
 // #include "ofxCv.h"
+#include "ofxDlib.h"
 #include "ofxFaceTracker2.h"
 #include "ofxBiquadFilter.h"
-// #include "ofxDlib.h"
 #include "ofxTimer.h"
 
 

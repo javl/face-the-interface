@@ -91,7 +91,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
 
-    state = PATH_1_2;
+    state = PATH_1_3;
     substate = 0;
     path = 0;
     num_faces = 0;
@@ -525,7 +525,7 @@ void ofApp::update(){
                 nextSubstate();
             }
             else if (substate == 12 && !voice.isPlaying()){
-                queueNextSubstate(4000);
+                queueNextSubstate(2000);
             }
 
             else if (substate == 13 && !voice.isPlaying()){
@@ -535,29 +535,21 @@ void ofApp::update(){
                 nextSubstate();
             }
             else if (substate == 14 && !voice.isPlaying()){
-                queueNextSubstate(4000);
-            }
-
-            else if (substate == 15 && !voice.isPlaying()){
                 playNumber(int(r * 100));
                 r = ofRandomuf();
                 nextSubstate();
             }
-            else if (substate == 16 && !voice.isPlaying()){
-                queueNextSubstate(4000);
+            else if (substate == 15 && !voice.isPlaying()){
+                queueNextSubstate(1000);
             }
 
-            else if (substate == 17 && !voice.isPlaying()){
+            else if (substate == 16 && !voice.isPlaying()){
                 //say Hence your
                 playAudio("hence-your_ffe5ebe8.mp3");
                 r = ofRandomuf();
                 nextSubstate();
             }
-            else if (substate == 18 && !voice.isPlaying()){
-                queueNextSubstate(4000);
-            }
-
-            else if (substate == 19 && !voice.isPlaying()){
+            else if (substate == 17 && !voice.isPlaying()){
                 if(r < 0.33){
                     //say poor
                     playAudio("poor_5cffaf93.mp3");
@@ -570,34 +562,26 @@ void ofApp::update(){
                 }
                 nextSubstate();
             }
-            else if (substate == 20 && !voice.isPlaying()){
-                queueNextSubstate(4000);
-            }
-
-            else if (substate == 21 && !voice.isPlaying()){
+            else if (substate == 18 && !voice.isPlaying()){
                 //say reflection
                 playAudio("reflection_40f3468c.mp3");
                 nextSubstate();
             }
-            else if (substate == 22 && !voice.isPlaying()){
-                queueNextSubstate(4000);
+            else if (substate == 19 && !voice.isPlaying()){
+                queueNextSubstate(2000);
             }
 
-            else if (substate == 23 && !voice.isPlaying()){
+            else if (substate == 20 && !voice.isPlaying()){
                 r = ofRandomuf();
                 //say Your friends have an average moral score of:
                 playAudio("your-friends-have-an-average-moral-score-of_51a43800.mp3");
                 nextSubstate();
             }
-            else if (substate == 24 && !voice.isPlaying()){
-                queueNextSubstate(4000);
-            }
-
-            else if (substate == 25 && !voice.isPlaying()){
+            else if (substate == 21 && !voice.isPlaying()){
                 playNumber(int(r*100));
                 nextSubstate();
             }
-            else if (substate == 26 && !voice.isPlaying()){
+            else if (substate == 22 && !voice.isPlaying()){
                 queueNextState(4000);
             }
 
