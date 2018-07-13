@@ -68,7 +68,9 @@ class ofApp : public ofBaseApp{
 
 
 
-		ofTrueTypeFont	verdana80;
+		ofTrueTypeFont fontTechnical;
+		ofTrueTypeFont fontInterface;
+
 		bool wasSmiling;
 		bool usePath3;
 
@@ -88,6 +90,7 @@ class ofApp : public ofBaseApp{
 
 		ofSoundPlayer voice;
 		ofVideoPlayer video;
+		ofImage image;
 
 		string lastFilename;
 		void playAudio(string filename);
@@ -95,6 +98,12 @@ class ofApp : public ofBaseApp{
 		void playNumber(int number);
 
 		ofxTimer timer;
+
+		string behavior_traffic;
+		string behavior_social;
+		string behavior_tax;
+		string behavior_moral;
+
 
 		// Video and face tracker
 		ofVideoGrabber grabber;
