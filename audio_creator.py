@@ -57,6 +57,7 @@ feedback_index = 0
 
 substate = 0
 for i, line in enumerate(use_lines):
+
     # search for the 'case' in our draw loop
     searchObj = re.search(r'(.*)case (.*):', line, re.M|re.I)
     if searchObj is not None:
@@ -64,7 +65,7 @@ for i, line in enumerate(use_lines):
         # found a new case, reset substate
         substate = 0
 
-    regex = r'(.*)if\s*\(substate == ([0-9]*)(.+)'
+    regex = r'(.*)if \(substate == ([0-9]*)(.+)'
     searchObj = re.search(regex, line, re.M|re.I)
     if searchObj is not None:
         new_line = re.sub(regex, r"\1if (substate == {}\3".format(substate), line, re.M|re.I)
