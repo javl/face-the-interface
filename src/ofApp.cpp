@@ -40,6 +40,8 @@
 #define PATH_3_10 310
 #define PATH_3_11 311
 #define PATH_3_12 312
+#define PATH_3_13 313
+#define PATH_3_14 314
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -930,26 +932,27 @@ void ofApp::update(){
             }
             break;
         case PATH_3_2:
-            int temp = 23;
 
-            if (substate == 0 & &!voice.isPlaying()){
+            if (substate == 0 && !voice.isPlaying()){
                 //say Most people find the current temperature of
-                if (temp )
             }
-            else if (substate == 1 & &!voice.isPlaying()){
+
+            else if (substate == 1 && !voice.isPlaying()){
                 //say <degrees>
             }
-            else if (substate == 2 & &!voice.isPlaying()){
+
+            else if (substate == 2 && !voice.isPlaying()){
                 //say degrees
             }
-            else if (substate == 3 & &!voice.isPlaying()){
-                if (temp < 0 ){
+
+            else if (substate == 3 && !voice.isPlaying()){
+                if (currentTemperature < 0 ){
                     //say too cold
                 }
-                else if (temp < 15 ){
+                else if (currentTemperature < 15 ){
                     //say chilly
                 }
-                else if (temp < 25 ){
+                else if (currentTemperature < 25 ){
                     //say agreeable
                 }
                 else {
@@ -957,19 +960,19 @@ void ofApp::update(){
                 }
                 nextSubstate();
             }
-            else if (substate == 4 & &!voice.isPlaying()){
+            else if (substate == 4 && !voice.isPlaying()){
                 queueNextState(2000);
             }
 
             break;
         case PATH_3_3:
-            if (substate == 0 & &!voice.isPlaying()){
+            if (substate == 0 && !voice.isPlaying()){
                 //say This experience is brought to you by Auto Flow, the online data streaming service
                 nextSubstate();
             }
 
             else if(substate == 1 && !voice.isPlaying()){
-                queueuNextState(1000);
+                queueNextState(1000);
             }
 
             break;

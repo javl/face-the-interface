@@ -105,6 +105,7 @@ class ofApp : public ofBaseApp{
 		string behavior_tax;
 		string behavior_moral;
 
+		int currentTemperature;
 
 		// Video and face tracker
 		ofVideoGrabber grabber;
