@@ -898,19 +898,13 @@ void ofApp::update(){
 //==================================================================================================
         case PATH_2_13:
             if (substate == 0 && !voice.isPlaying()){
-                video.load("audio/prerecorded/stickers.mp4");
-                video.setLoopState(OF_LOOP_NONE);
-                video.play();
-                nextSubstate();
-            }
-            else if (substate == 1 && !video.isPlaying()){
                 video.load("audio/prerecorded/2_13.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.play();
                 nextSubstate();
             }
 
-            else if(substate == 2 && !video.isPlaying()){
+            else if(substate == 1 && !video.isPlaying()){
                 state = DONE;
                 substate = 0;
             }
