@@ -727,6 +727,7 @@ void ofApp::update(){
 //==================================================================================================
         case PATH_2_5:
             if(substate == 0 && !voice.isPlaying()){
+                takeSneakyImage();
                 playAudioFile("prerecorded/camera-shutter-click-01.mp3");
                 nextSubstate();
             }
@@ -929,28 +930,35 @@ void ofApp::update(){
 
             if (substate == 0 && !voice.isPlaying()){
                 //say Most people find the current temperature of
+                playAudio("most-people-find-the-current-temperature-of_d60c8b90.mp3");
             }
 
             else if (substate == 1 && !voice.isPlaying()){
                 //say <degrees>
+                playAudio("degrees_a308cd86.mp3");
             }
 
             else if (substate == 2 && !voice.isPlaying()){
                 //say degrees
+                playAudio("degrees_18daee01.mp3");
             }
 
             else if (substate == 3 && !voice.isPlaying()){
                 if (currentTemperature < 0 ){
                     //say too cold
+                    playAudio("too-cold_67b4d969.mp3");
                 }
                 else if (currentTemperature < 15 ){
                     //say chilly
+                    playAudio("chilly_ba70ae92.mp3");
                 }
                 else if (currentTemperature < 25 ){
                     //say agreeable
+                    playAudio("agreeable_cd0a6398.mp3");
                 }
                 else {
                     //say too hot
+                    playAudio("too-hot_62486f03.mp3");
                 }
                 nextSubstate();
             }
@@ -962,6 +970,7 @@ void ofApp::update(){
         case PATH_3_3:
             if (substate == 0 && !voice.isPlaying()){
                 //say This experience is brought to you by Auto Flow, the online data streaming service
+                playAudio("this-experience-is-brought-to-you-by-auto-flow-the-online-data-s_dbf30ad8.mp3");
                 nextSubstate();
             }
 
@@ -1049,19 +1058,29 @@ void ofApp::update(){
             nextState(); // fix for incorrect numbering in word file
             break;
         case PATH_3_14:
-            //
-            break;
+            if (substate == 0 && !voice.isPlaying()){
+                video.load("audio/prerecorded/3_14.mp4");
+                video.setLoopState(OF_LOOP_NONE);
+                video.play();
+                nextSubstate();
+            }
 
+            else if (substate == 1 && !video.isPlaying()){
+                video.close();
+                nextSubstate();
+            }
+
+            else if (substate == 2 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 3 && !voice.isPlaying()){
+                state = DONE;
+                substate = 0;
+            }
+            break;
     }
     voicePlaying = voice.isPlaying();
-
-    // // if in the last loop voicePlaying was true, but now voice.isPlaying() is false, it means
-    // // it just finished
-    // bool voiceFinished = false;
-    // if (voicePlaying && !voice.isPlaying()){
-    //     voiceFinished = true;
-    // }
-    // ofLog() << "camera initialized: " << grabber.isInitialized();
 
 }
 
@@ -1148,63 +1167,6 @@ void ofApp::draw(){
         default:
         break;
     }
-
-    // tracker.drawDebugStylized(0, 0, 300, 300);
-
-    //==============================================================
-    // DRAW EXPRESSION
-    /*
-    for (int i = 0; i < 4; i++) {
-        ofSetColor(255);
-
-        string str;
-        float val;
-        switch (i) {
-            case 0:
-                str = "BIG SMILE";
-                val = bigSmileValue.value();
-                break;
-            case 1:
-                str = "SMALL SMILE";
-                val = smallSmileValue.value();
-                break;
-        }
-
-        ofDrawBitmapStringHighlight(str, 20, 0);
-        ofDrawRectangle(20, 20, 300 * val, 30);
-    }
-     */
-    // END DRAW EXPRESSION
-    //==============================================================
-
-    /*
-    if(num_faces > 0) {
-        ofDrawBitmapStringHighlight("got face", 10, 200);
-
-        timeSinceLastFace = ofGetElapsedTimef();
-        if (state == IDLE){
-            state = INTRO_1;
-            substate = 0;
-        }
-        else if(state == LOST){
-            voice.stop();
-            state = continue_state;
-            substate = continue_substate;
-        }
-    }else if (num_faces == 0){
-        if(ofGetElapsedTimef() - timeSinceLastFace > 10.0f) {
-            continue_state = state;
-            continue_substate = substate;
-            voice.stop();
-            state = LOST;
-            substate = 0;
-        }
-        else if(ofGetElapsedTimef() - timeSinceLastFace > 5.0f) {
-             // I lost you. Where did you go?
-        }
-    }
-     */
-
 }
 
 void ofApp::nextState(){
@@ -1253,7 +1215,6 @@ void ofApp::checkWait(){
         state = nextStateNumber;
         substate = nextSubstateNumber;
     }
-    // ofLog() << "timeleftinmillis: " << timer.getTimeLeftInMillis();
 }
 
 // Take a picture we can use later
