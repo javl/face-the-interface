@@ -43,19 +43,23 @@
 #define PATH_3_13 313
 #define PATH_3_14 314
 
+//# TODO 1.5 audio verkeerd, SORRY ABOUT THAT moet aan begin
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     stocks.load("stocks_shape.svg");
+    stocksX = ofGetWidth();
+    stocksY = 10;
 
     ofSetWindowPosition(1920, 0);
 
-    fontTechnical.load("fonts/MaisonNeueMono.otf", 40, true, true);
+    fontTechnical.load("fonts/MaisonNeueMono.otf", 30, true, true);
     fontInterface.load("fonts/Lack-Regular.otf", 80, true, true);
 
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
 
-    state = PATH_3_1;
+    state = PATH_2_1;
     substate = 0;
     path = 0;
     num_faces = 0;
@@ -415,7 +419,7 @@ void ofApp::update(){
         case PATH_1_1:
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/1_1.mp4");
-                video.setVolume(0.8);
+                video.setVolume(0.2);
                 video.play();
                 nextSubstate();
             } else if (substate == 1 && (video.getPosition() == 1.0 || video.getPosition() == -1.0) ){
@@ -480,73 +484,76 @@ void ofApp::update(){
 //==================================================================================================
         case PATH_1_3:
             if (substate == 0 && !voice.isPlaying()){
-                //say Faces like yours are likely to commit crimes.
-                playAudio("faces-like-yours-are-likely-to-commit-crimes_0a38818a.mp3");
+                //say Faces like yours are likely to
+                playAudio("faces-like-yours-are-likely-to_3af01064.mp3");
                 nextSubstate();
             }
 
             else if (substate == 1 && !voice.isPlaying()){
-                queueNextSubstate(1000);
+                //say Commit crimes
+                playAudio("commit-crimes_a3c5086d.mp3");
+                nextSubstate();
             }
 
             else if (substate == 2 && !voice.isPlaying()){
+                queueNextSubstate(2000);
+            }
+
+            else if (substate == 3 && !voice.isPlaying()){
                 //say Have you ever done something illegal?
                 playAudio("have-you-ever-done-something-illegal_0f153ac7.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 3 && !voice.isPlaying()){
+            else if (substate == 4 && !voice.isPlaying()){
                 queueNextSubstate(2000);
             }
 
-            else if (substate == 4 && !voice.isPlaying()){
+            else if (substate == 5 && !voice.isPlaying()){
                 //say Reviewing
                 playAudio("reviewing_4827b311.mp3");
                 r = 2 + ofRandom(4);
                 nextSubstate();
             }
 
-            else if (substate == 5 && !voice.isPlaying()){
+            else if (substate == 6 && !voice.isPlaying()){
                 playNumber(int(r));
                 nextSubstate();
             }
 
-            else if (substate == 6 && !voice.isPlaying()){
+            else if (substate == 7 && !voice.isPlaying()){
                 //say cases
                 playAudio("cases_c78bd47f.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 7 && !voice.isPlaying()){
+            else if (substate == 8 && !voice.isPlaying()){
                 //say of possible unwanted behavior
                 playAudio("of-possible-unwanted-behavior_afcbb134.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 8 && !voice.isPlaying()){
-                queueNextSubstate(3000);
-            }
-
-            else if (substate == 9 && !voice.isPlaying()){
-                //say Do you think you can be trusted?
-                playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
+            else if (substate == 9 && !video.isPlaying()){
+                video.load("video/counterDots.mp4");
+                video.setLoopState(OF_LOOP_NORMAL);
+                video.setSpeed(1.0);
+                video.play();
                 nextSubstate();
             }
 
             else if (substate == 10 && !voice.isPlaying()){
-                queueNextSubstate(1000);
+                queueNextSubstate(3000);
             }
 
             else if (substate == 11 && !voice.isPlaying()){
-                //say Your moral score based on social associations is:
-                playAudio("your-moral-score-based-on-social-associations-is_f08fe98a.mp3");
-                r = ofRandomuf();
+                video.close();
+                video.setLoopState(OF_LOOP_NONE);
                 nextSubstate();
             }
 
             else if (substate == 12 && !voice.isPlaying()){
-                playNumber(int(r * 100));
-                r = ofRandomuf();
+                //say Do you think you can be trusted?
+                playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
                 nextSubstate();
             }
 
@@ -555,13 +562,30 @@ void ofApp::update(){
             }
 
             else if (substate == 14 && !voice.isPlaying()){
+                //say Your moral score based on social associations is:
+                playAudio("your-moral-score-based-on-social-associations-is_f08fe98a.mp3");
+                r = ofRandomuf();
+                nextSubstate();
+            }
+
+            else if (substate == 15 && !voice.isPlaying()){
+                playNumber(int(r * 100));
+                r = ofRandomuf();
+                nextSubstate();
+            }
+
+            else if (substate == 16 && !voice.isPlaying()){
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 17 && !voice.isPlaying()){
                 //say Hence your
                 playAudio("hence-your_ffe5ebe8.mp3");
                 r = ofRandomuf();
                 nextSubstate();
             }
 
-            else if (substate == 15 && !voice.isPlaying()){
+            else if (substate == 18 && !voice.isPlaying()){
                 if(r < 0.33){
                     //say poor
                     playAudio("poor_5cffaf93.mp3");
@@ -575,30 +599,35 @@ void ofApp::update(){
                 nextSubstate();
             }
 
-            else if (substate == 16 && !voice.isPlaying()){
+            else if (substate == 19 && !voice.isPlaying()){
                 //say reflection
                 playAudio("reflection_40f3468c.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 17 && !voice.isPlaying()){
+            else if (substate == 20 && !voice.isPlaying()){
                 queueNextSubstate(2000);
             }
 
-            else if (substate == 18 && !voice.isPlaying()){
+            else if (substate == 21 && !voice.isPlaying()){
                 r = ofRandomuf();
                 //say Your friends have an average moral score of:
                 playAudio("your-friends-have-an-average-moral-score-of_51a43800.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 19 && !voice.isPlaying()){
+            else if (substate == 22 && !voice.isPlaying()){
                 playNumber(int(r*100));
                 nextSubstate();
             }
 
-            else if (substate == 20 && !voice.isPlaying()){
-                queueNextState(4000);
+            else if (substate == 23 && !voice.isPlaying()){
+                queueNextSubstate(4000);
+            }
+
+            else if (substate == 24 && !voice.isPlaying()){
+                dataSendStart = ofGetElapsedTimef();
+                nextState();
             }
 
             break;
@@ -611,7 +640,7 @@ void ofApp::update(){
             }
 
             else if (substate == 1){
-                queueNextSubstate(5000);
+                queueNextSubstate(4000);
             }
 
             else if (substate == 2){
@@ -623,6 +652,7 @@ void ofApp::update(){
             if(substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/1_5.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(0.1);
                 video.play();
                 nextSubstate();
             }
@@ -931,30 +961,34 @@ void ofApp::update(){
         case PATH_3_2:
             drawStocks();
             if (substate == 0 && !voice.isPlaying()){
+                currentTemp = getCurrentTemperature();
+            }
+
+            else if (substate == 1 && !voice.isPlaying()){
                 //say Most people find the current temperature of
                 playAudio("most-people-find-the-current-temperature-of_d60c8b90.mp3");
             }
 
-            else if (substate == 1 && !voice.isPlaying()){
+            else if (substate == 2 && !voice.isPlaying()){
                 //say <degrees>
                 playAudio("degrees_a308cd86.mp3");
             }
 
-            else if (substate == 2 && !voice.isPlaying()){
+            else if (substate == 3 && !voice.isPlaying()){
                 //say degrees
                 playAudio("degrees_18daee01.mp3");
             }
 
-            else if (substate == 3 && !voice.isPlaying()){
-                if (currentTemperature < 0 ){
+            else if (substate == 4 && !voice.isPlaying()){
+                if (currentTemp < 0 ){
                     //say too cold
                     playAudio("too-cold_67b4d969.mp3");
                 }
-                else if (currentTemperature < 15 ){
+                else if (currentTemp < 15 ){
                     //say chilly
                     playAudio("chilly_ba70ae92.mp3");
                 }
-                else if (currentTemperature < 25 ){
+                else if (currentTemp < 25 ){
                     //say agreeable
                     playAudio("agreeable_cd0a6398.mp3");
                 }
@@ -964,7 +998,7 @@ void ofApp::update(){
                 }
                 nextSubstate();
             }
-            else if (substate == 4 && !voice.isPlaying()){
+            else if (substate == 5 && !voice.isPlaying()){
                 queueNextState(2000);
             }
 
@@ -1093,27 +1127,21 @@ void ofApp::update(){
     voicePlaying = voice.isPlaying();
 
 }
-
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofTranslate(mouseX, mouseY);
-    drawStocks();
-    return;
     // Draw the webcam and the face tracker
     ofSetColor(255);
     float ratio = grabber.getWidth() / 600;
-
     grabber.draw(0, ofGetHeight()-int(grabber.getHeight()/ratio), 600, int(grabber.getHeight()/ratio));
+    // tracker.drawDebugStylized();
+    // tracker.drawDebug(ofGetWidth()/2, ofGetHeight()-int(grabber.getHeight()/ratio), 600, int(grabber.getHeight()/ratio));
 
-    ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
-    ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
-    ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
-    ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
-    ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
+    // ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
+    // ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
+    // ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
+    // ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
+    // ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
 
-    if(num_faces > 0) {
-        ofDrawBitmapStringHighlight("got face", 10, 200);
-    }
     if(video.isPlaying()){
         ofSetColor(255);
         video.draw(0, 0);
@@ -1128,19 +1156,17 @@ void ofApp::draw(){
             // if (substate== 14 && video.isPlaying()){
                 // video.draw((ofGetWidth() - video.getWidth())/2.0, (ofGetHeight() - video.getHeight())/2.0);
             // }else
-            if(substate >= 13){
+            if(substate >= 15){
                 tracker.drawDebug();
             }
             break;
 
         case INTRO_2:
-            // video.draw((ofGetWidth() - video.getWidth())/2.0, (ofGetHeight() - video.getHeight())/2.0);
-            tracker.drawDebug();
-            drawSmileStats();
-            break;
-
-        case INTRO_3:
-            sneakyImage.draw(0, 0, 1200, 1920);
+            if (substate < 3){
+                // video.draw((ofGetWidth() - video.getWidth())/2.0, (ofGetHeight() - video.getHeight())/2.0);
+                tracker.drawDebug();
+                drawSmileStats();
+            }
             break;
 
         case PATH_1_2:
@@ -1155,18 +1181,35 @@ void ofApp::draw(){
             break;
 
         case PATH_1_4:
+        ofLog() << mouseX << ", " << mouseY;
             // Draw fallen desktop
             image.draw(0, 0, 1200, 1920);
-            grabber.draw(0, 0, 640, 480);
-            tracker.drawDebug(0, 0);
+            grabber.draw(200, 1300, 640, 480);
+            tracker.drawDebug(200, 1300, 640, 480);
 
-            for (int i = 0; i < 10; ++i){
-                fontTechnical.drawString("some technical text?", 10, 10 + 50 * i);
+            ofLog() << mouseX << ", " << mouseY;
+            // for (int i = 0; i < 10; ++i){
+                // fontTechnical.drawString("some technical text?", 450, 520 + 50 * i);
+            // }
+            fontTechnical.drawString("Tracker FPS: " + ofToString(tracker.getThreadFps()), 450, 480);
+            fontTechnical.drawString("Age: inconclusive", 450, 480 + 36 * 1);
+            fontTechnical.drawString("Body temp: 37.4", 450, 480 + 36 * 2);
+            if(tracker.size() > 0){
+                fontTechnical.drawString(
+                    "Bounding box: " + ofToString(tracker.getInstances()[0].getBoundingBox().getTopLeft().x) +
+                    ", " +
+                    ofToString(tracker.getInstances()[0].getBoundingBox().getTopLeft().y), 450, 480 + 36 * 3);
+            }else{
+                fontTechnical.drawString(
+                    "Bounding box: n/a", 450, 480 + 36 * 3);
             }
+            fontTechnical.drawString("Data send: " + ofToString(min(100, 26 + int((ofGetElapsedTimef()-dataSendStart)))) + "%", 450, 480 + 36 * 4);
+            fontTechnical.drawString("Storage left: 2.4Tb", 450, 480 + 36 * 5);
+            fontTechnical.drawString("CPU: " + ofToString(63+int(ofRandom(1)))+"%", 450, 480 + 36 * 6);
             break;
 
         case PATH_1_5:
-            sneakyImage.draw(0, 0);
+            sneakyImage.draw(0, (ofGetHeight()/2.0) - (sneaky_h/2.0), sneaky_w, sneaky_h);
             break;
 
         case PATH_2_13:
@@ -1180,7 +1223,6 @@ void ofApp::draw(){
         default:
         break;
     }
-    drawStocks();
 }
 
 void ofApp::nextState(){
@@ -1234,15 +1276,21 @@ void ofApp::checkWait(){
 // Take a picture we can use later
 void ofApp::takeSneakyImage() {
     sneakyImage.setFromPixels(grabber.getPixels());
+    sneaky_ratio = sneakyImage.getWidth() / ofGetWidth();
+    sneaky_w = ofGetWidth(); //full screen width
+    sneaky_h = sneakyImage.getHeight() / sneaky_ratio;
 }
 
 void ofApp::drawStocks(){
     ofBackground(0);
     ofPushMatrix();
-    ofTranslate(mouseX, mouseY);
     ofSetColor(255);
-    ofDrawCircle(0, 0, 10, 10);
-    ofLog() << "draw stocks";
+    ofDrawRectangle(0, 0, ofGetWidth(), 115);
+    ofTranslate(stocksX, stocksY);
+    stocksX-=2;
+    if(stocksX < stocks.getWidth() * -1){
+        stocksX = ofGetWidth();
+    }
     stocks.draw();
     ofPopMatrix();
 }
@@ -1272,20 +1320,21 @@ void ofApp::playNumber(int number){
 void ofApp::drawSmileStats(){
     ofPushMatrix();
     // ofTranslate(0, ofGetHeight()-450);
-    ofTranslate(0, 20);
-    for (int i = 0; i < 4; i++) {
+    ofTranslate(0, 100);
+    // ofLog() << "mouseY: " << mouseY;
+    for (int i = 0; i < 2; i++) {
         ofSetColor(255);
 
         string str;
         float val;
         switch (i) {
             case 0:
-                str = "BIG SMILE";
-                val = bigSmileValue.value();
-                break;
-            case 1:
                 str = "SMALL SMILE";
                 val = smallSmileValue.value();
+                break;
+            case 1:
+                str = "BIG SMILE";
+                val = bigSmileValue.value();
                 break;
         }
 
@@ -1588,6 +1637,38 @@ void ofApp::keyReleased(int key){
     }
 }
 
+int ofApp::getCurrentTemperature(){
+    ofXml tempXml;
+    int temp;
+
+    // Do not reuse this API key for any other projects
+    ofHttpResponse resp = ofLoadURL("https://api.openweathermap.org/data/2.5/weather?id=2759794&mode=xml&units=metric&appid=0834fca6801ebf806a7495e1cc28536b");
+    tempXml.load(resp.data.getText());
+    //if we can't access the URL/data
+    if(!tempXml.load(resp.data)){
+        temp = int(ofRandom(10, 25));
+        ofLog() << "Couldn't load file, get random temperature: " << temp;
+    }else{
+        string val = tempXml.getChild("current").getChild("temperature").getAttribute("value").getValue();
+        // If we don't have temperature data for some reason
+        if (val == "" ){
+            ofLog() << "no val found in XML, get random temperature: " << temp;
+            temp = int(ofRandom(10, 25));
+        }else{
+            temp = ofToInt(val);
+            ofLog() << "live temp: " << temp;
+        }
+    }
+    return temp;
+}
+// string ofApp::urlResponse(ofHttpResponse &httpResponse){
+//     if(httpResponse.status==200 ){  // i.e is it ok
+//         return httpResponse.data.getText();
+//     }else{
+//         ofLog() << "error returned: " << httpResponse.status;
+//         return "";
+//     }
+// }
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
 

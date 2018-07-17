@@ -50,6 +50,8 @@ class ofApp : public ofBaseApp{
 		void sayDayNumber();
 		void sayDayName();
 
+		// string urlResponse(ofHttpResponse &httpResponse);
+
 		int num_faces;
 		float r; // used to store random float to make choices
 		float r2; // used to store random float to make choices
@@ -65,7 +67,11 @@ class ofApp : public ofBaseApp{
 		vector<pfunct_type> learned_functions;
 
 		ofxSVG stocks;
+		int stocksX;
+		int stocksY;
 
+		int currentTemp;
+		void urlResponse(ofHttpResponse & response);
 
 		ofTrueTypeFont fontTechnical;
 		ofTrueTypeFont fontInterface;
@@ -97,6 +103,7 @@ class ofApp : public ofBaseApp{
 		void playAudioFile(string filename);
 		void playNumber(int number);
 
+
 		ofxTimer timer;
 
 		string behavior_traffic;
@@ -104,14 +111,19 @@ class ofApp : public ofBaseApp{
 		string behavior_tax;
 		string behavior_moral;
 
-		int currentTemperature;
 
 		// Video and face tracker
 		ofVideoGrabber grabber;
 		ofxFaceTracker2 tracker;
 		ofImage sneakyImage; // used for taking a picture
+		float sneaky_ratio;
+		float sneaky_w;
+		float sneaky_h;
+		float dataSendStart; // for the 'fallen' screen
+
 		void takeSneakyImage();
 		void drawStocks();
+		int getCurrentTemperature();
 
 
 };
