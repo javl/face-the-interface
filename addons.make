@@ -4,4 +4,5 @@ ofxDlib
 ofxFaceTracker2
 ofxGui
 ofxOpenCv
+ofxSvg
 ofxTimer

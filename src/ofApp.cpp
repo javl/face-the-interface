@@ -45,6 +45,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    stocks.load("stocks_shape.svg");
 
     ofSetWindowPosition(1920, 0);
 
@@ -54,7 +55,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
 
-    state = PATH_2_13;
+    state = PATH_3_1;
     substate = 0;
     path = 0;
     num_faces = 0;
@@ -916,6 +917,7 @@ void ofApp::update(){
 //==================================================================================================
 //==================================================================================================
         case PATH_3_1:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 //say Starting path three
                 playAudio("starting-path-three_ee87c5ea.mp3");
@@ -927,7 +929,7 @@ void ofApp::update(){
             }
             break;
         case PATH_3_2:
-
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 //say Most people find the current temperature of
                 playAudio("most-people-find-the-current-temperature-of_d60c8b90.mp3");
@@ -968,6 +970,7 @@ void ofApp::update(){
 
             break;
         case PATH_3_3:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 //say This experience is brought to you by Auto Flow, the online data streaming service
                 playAudio("this-experience-is-brought-to-you-by-auto-flow-the-online-data-s_dbf30ad8.mp3");
@@ -980,6 +983,7 @@ void ofApp::update(){
 
             break;
         case PATH_3_4:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_4.mp4");
                 video.setLoopState(OF_LOOP_NONE);
@@ -998,6 +1002,7 @@ void ofApp::update(){
             break;
 
         case PATH_3_5:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_5.mp4");
                 video.setLoopState(OF_LOOP_NONE);
@@ -1031,6 +1036,7 @@ void ofApp::update(){
             break;
 
         case PATH_3_10:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_10.mp4");
                 video.setLoopState(OF_LOOP_NONE);
@@ -1049,15 +1055,19 @@ void ofApp::update(){
             break;
 
         case PATH_3_11:
+            drawStocks();
             nextState(); // fix for incorrect numbering in word file
             break;
         case PATH_3_12:
+            drawStocks();
             nextState(); // fix for incorrect numbering in word file
             break;
         case PATH_3_13:
+            drawStocks();
             nextState(); // fix for incorrect numbering in word file
             break;
         case PATH_3_14:
+            drawStocks();
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_14.mp4");
                 video.setLoopState(OF_LOOP_NONE);
@@ -1086,6 +1096,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofTranslate(mouseX, mouseY);
+    drawStocks();
+    return;
     // Draw the webcam and the face tracker
     ofSetColor(255);
     float ratio = grabber.getWidth() / 600;
@@ -1167,6 +1180,7 @@ void ofApp::draw(){
         default:
         break;
     }
+    drawStocks();
 }
 
 void ofApp::nextState(){
@@ -1222,7 +1236,16 @@ void ofApp::takeSneakyImage() {
     sneakyImage.setFromPixels(grabber.getPixels());
 }
 
-
+void ofApp::drawStocks(){
+    ofBackground(0);
+    ofPushMatrix();
+    ofTranslate(mouseX, mouseY);
+    ofSetColor(255);
+    ofDrawCircle(0, 0, 10, 10);
+    ofLog() << "draw stocks";
+    stocks.draw();
+    ofPopMatrix();
+}
 
 void ofApp::playAudio(string filename){
     if (filename != lastFilename){

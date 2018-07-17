@@ -1,13 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
-// #include "ofxOpenCv.h"
-// #include "ofxCv.h"
 #include "ofxDlib.h"
 #include "ofxFaceTracker2.h"
 #include "ofxBiquadFilter.h"
 #include "ofxTimer.h"
-
+#include "ofxSvg.h"
 
 typedef dlib::matrix<double,40,1> sample_type;
 typedef dlib::radial_basis_kernel<sample_type> kernel_type;
@@ -66,6 +64,7 @@ class ofApp : public ofBaseApp{
 
 		vector<pfunct_type> learned_functions;
 
+		ofxSVG stocks;
 
 
 		ofTrueTypeFont fontTechnical;
@@ -112,6 +111,7 @@ class ofApp : public ofBaseApp{
 		ofxFaceTracker2 tracker;
 		ofImage sneakyImage; // used for taking a picture
 		void takeSneakyImage();
+		void drawStocks();
 
 
 };
