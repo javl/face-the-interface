@@ -417,7 +417,7 @@ void ofApp::update(){
                 nextSubstate();
             } else if (substate == 1 && !video.isPlaying()){
                 nextState();
-            }
+            }		
             break;
 //==================================================================================================
         case PATH_1_2:
@@ -1683,6 +1683,9 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
+    if(button == 2){
+        ofExit();
+    }
 
 }
 
