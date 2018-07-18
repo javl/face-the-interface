@@ -59,7 +59,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
 
-    state = PATH_3_1;
+    state = PATH_1_1;
     substate = 0;
     path = 0;
     num_faces = 0;
@@ -351,50 +351,42 @@ void ofApp::update(){
 
             else if (substate == 1 && !voice.isPlaying()){
                 queueNextSubstate(1000);
-
             }
 
             else if (substate == 2 && !voice.isPlaying()){
-                //say breath
+                //say breathe
                 playAudio("breath_dbd782e4.mp3");
                 nextSubstate();
-
             }
 
             else if (substate == 3 && !voice.isPlaying()){
                 queueNextSubstate(1000);
-
             }
 
             else if (substate == 4 && !voice.isPlaying()){
                 //say Slow down for a moment
                 playAudio("slow-down-for-a-moment_c5a106c1.mp3");
                 nextSubstate();
-
             }
 
             else if (substate == 5 && !voice.isPlaying()){
                 queueNextSubstate(1000);
-
             }
 
             else if (substate == 6 && !voice.isPlaying()){
                 //say Be aware of your body
                 playAudio("be-aware-of-your-body_24329638.mp3");
                 nextSubstate();
-
             }
 
             else if (substate == 7 && !voice.isPlaying()){
                 queueNextSubstate(1000);
-
             }
 
             else if (substate == 8 && !voice.isPlaying()){
                 //say Relax your algorithm
                 playAudio("relax-your-algorithm_c77c81a8.mp3");
                 nextSubstate();
-
             }
 
             else if (substate == 9 && !voice.isPlaying()){
@@ -419,10 +411,11 @@ void ofApp::update(){
         case PATH_1_1:
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/1_1.mp4");
-                video.setVolume(0.2);
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(0.6);
                 video.play();
                 nextSubstate();
-            } else if (substate == 1 && (video.getPosition() == 1.0 || video.getPosition() == -1.0) ){
+            } else if (substate == 1 && !video.isPlaying()){
                 nextState();
             }
             break;
@@ -1133,18 +1126,12 @@ void ofApp::draw(){
     // tracker.drawDebugStylized();
     // tracker.drawDebug(ofGetWidth()/2, ofGetHeight()-int(grabber.getHeight()/ratio), 600, int(grabber.getHeight()/ratio));
 
-    // ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
-    // ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
-    // ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
-    // ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
-    // ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
-
     if(video.isPlaying()){
         ofSetColor(255);
         video.draw(0, 0);
-        if(video.getPosition() == 1.0){
-            video.close();
-        }
+        //if(video.getPosition() == 1.0){
+        //    video.close();
+        //}
     }
 
     switch (state){
@@ -1225,6 +1212,14 @@ void ofApp::draw(){
         default:
         break;
     }
+    
+    ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
+    ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
+    ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
+    ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
+    ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
+    
+
 }
 
 void ofApp::nextState(){
