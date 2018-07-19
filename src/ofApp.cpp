@@ -355,7 +355,7 @@ void ofApp::update(){
 
             else if (substate == 2 && !voice.isPlaying()){
                 //say breathe
-                playAudio("breath_dbd782e4.mp3");
+                playAudio("breathe_f328976d.mp3");
                 nextSubstate();
             }
 
@@ -417,7 +417,7 @@ void ofApp::update(){
                 nextSubstate();
             } else if (substate == 1 && !video.isPlaying()){
                 nextState();
-            }		
+            }
             break;
 //==================================================================================================
         case PATH_1_2:
@@ -1212,13 +1212,13 @@ void ofApp::draw(){
         default:
         break;
     }
-    
+
     ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
     ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
     ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
     ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
     ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
-    
+
 
 }
 
