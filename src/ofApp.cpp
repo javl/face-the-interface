@@ -43,7 +43,7 @@
 #define PATH_3_13 313
 #define PATH_3_14 314
 
-//# TODO 1.5 audio verkeerd, SORRY ABOUT THAT moet aan begin
+#define VIDEO_VOLUME 0.6
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -59,12 +59,11 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
 
-    state = PATH_1_1;
+    state = INTRO_1;
     substate = 0;
     path = 0;
     num_faces = 0;
     smileLoops = 0;
-
 
     video.setLoopState(OF_LOOP_NONE);
 
@@ -95,14 +94,14 @@ void ofApp::setup(){
 void ofApp::update(){
     // Update tracker when there are new frames
     grabber.update();
-    // Wait for about 10 seconds for the camera to become fully functional
-    // if(ofGetElapsedTimef() < 10.0){
-    //     return;
-    // }
+
     if(grabber.isFrameNew()){
         tracker.update(grabber);
         num_faces = tracker.size();
 
+        if (num_faces > 0){
+            last_face_time = ofGetElapsedTimef();
+        }
         if(num_faces > 0 && state == IDLE){
             state = INTRO_1;
             substate = 0;
@@ -150,22 +149,26 @@ void ofApp::update(){
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/done.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2){
-                queueNextSubstate(10000);
-            }
-
             else if (substate == 3){
-                state = IDLE;
-                substate = 0;
+                // stay in this mode until we haven't seen a face in 15 seconds
+                if (num_face == 0 && (ofGetElapsedTimef()-last_face_time) > 15.0){
+                    state = IDLE;
+                    substate = 0;
+               }
             }
 
         break;
@@ -247,38 +250,42 @@ void ofApp::update(){
 
             else if (substate == 13 && !video.isPlaying()){
                 video.load("audio/prerecorded/loadingCircleFlat.mp4");
-                video.setLoopState(OF_LOOP_NORMAL);
-                video.setSpeed(1.0);
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 14 && !voice.isPlaying()){
+            else if (substate == 14 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 15 && video.getIsMovieDone()){
                 queueNextSubstate(3000);
             }
 
-            else if (substate == 15 && !voice.isPlaying()){
+            else if (substate == 16 && !voice.isPlaying()){
                 video.close();
                 video.setLoopState(OF_LOOP_NONE);
                 nextSubstate();
 
-            } else if (substate == 16 && !voice.isPlaying()){
+            } else if (substate == 17 && !voice.isPlaying()){
                 //say Detected: one human face.
                 playAudio("detected-one-human-face_056f77fc.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 17 && !voice.isPlaying()){
+            else if (substate == 18 && !voice.isPlaying()){
                 queueNextSubstate(1000);
             }
 
-            else if (substate == 18 && !voice.isPlaying()){
+            else if (substate == 19 && !voice.isPlaying()){
                 //say Human. You are
                 playAudio("human-you-are_21647cb6.mp3");
                 video.stop();
                 nextSubstate();
                 queueNextSubstate(800);
-            }else if (substate == 19 && !voice.isPlaying()){
+            }else if (substate == 20 && !voice.isPlaying()){
                 if (ofRandomuf() < 0.5){
                     //say Late
                     playAudio("late_d9359722.mp3");
@@ -287,7 +294,7 @@ void ofApp::update(){
                     playAudio("right-on-time_a2f4c60f.mp3");
                 }
                 nextSubstate();
-            }else if (substate == 20 && !voice.isPlaying()){
+            }else if (substate == 21 && !voice.isPlaying()){
                 queueNextState(2000);
             }
 
@@ -412,7 +419,7 @@ void ofApp::update(){
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/1_1.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.6);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             } else if (substate == 1 && !video.isPlaying()){
@@ -528,19 +535,18 @@ void ofApp::update(){
 
             else if (substate == 9 && !video.isPlaying()){
                 video.load("video/counterDots.mp4");
-                video.setLoopState(OF_LOOP_NORMAL);
-                video.setSpeed(1.0);
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 10 && !voice.isPlaying()){
-                queueNextSubstate(3000);
+            else if (substate == 10 && video.isLoaded()){
+                nextSubstate();
             }
 
-            else if (substate == 11 && !voice.isPlaying()){
+            else if (substate == 11 && video.getIsMovieDone()){
                 video.close();
-                video.setLoopState(OF_LOOP_NONE);
                 nextSubstate();
             }
 
@@ -645,11 +651,21 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/1_5.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
-            else if (substate == 1 && !video.isPlaying()){
+
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
+
+            else if (substate == 3 && !voice.isPlaying()){
                 // video van anja
                 // toon eerder genomen foto
                 state = DONE;
@@ -662,11 +678,21 @@ void ofApp::update(){
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/2_1.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
+
+            else if (substate == 3 && !video.isPlaying()){
                 queueNextState(2000);
                 smileLoops = 0; // used in next state
             }
@@ -677,21 +703,26 @@ void ofApp::update(){
             if (substate == 0 && !video.isPlaying()){
                 video.load("audio/prerecorded/2_2.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2){
+
+            else if (substate == 3){
                 queueNextSubstate(3000);
             }
 
-            else if (substate == 3){
+            else if (substate == 4){
                 if (smallSmileValue.value() > 0.7 || bigSmileValue.value() > 0.7){
                     wasSmiling = true;
                 }else{
@@ -700,7 +731,7 @@ void ofApp::update(){
                 nextSubstate();
             }
 
-            else if (substate == 4 && !video.isPlaying()){
+            else if (substate == 5 && !video.isPlaying()){
                 if(wasSmiling){
                     //say Thank you, that is beautiful
                     playAudio("thank-you-that-is-beautiful_558cb503.mp3");
@@ -712,7 +743,7 @@ void ofApp::update(){
                 }
             }
 
-            else if (substate == 5 && !voice.isPlaying()){
+            else if (substate == 6 && !voice.isPlaying()){
                 if(wasSmiling){
                     if(smileLoops < 2){ // loop 3 times
                         smileLoops++;
@@ -730,7 +761,7 @@ void ofApp::update(){
                 }
             }
 
-            else if (substate == 6 && !voice.isPlaying()){
+            else if (substate == 7 && !voice.isPlaying()){
                 queueNextState(1000);
             }
 
@@ -857,15 +888,20 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/2_10.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextState();
             }
+
             break;
 
 //==================================================================================================
@@ -885,29 +921,34 @@ void ofApp::update(){
             else if (substate == 1 && !voice.isPlaying()){
                 video.load("audio/prerecorded/2_12.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 2 && !video.isPlaying()){
+            else if (substate == 2 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 3 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 3 && !voice.isPlaying()){
+
+            else if (substate == 4 && !voice.isPlaying()){
                 //say There are over 1000 people with your kind of visual make-up.
                 playAudio("there-are-over-1000-people-with-your-kind-of-visual-makeup_73b39acd.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 4 && !voice.isPlaying()){
+            else if (substate == 5 && !voice.isPlaying()){
                 //say People like, you. I couldn’t care less.
                 playAudio("people-like-you-i-couldnt-care-less_b8f05b99.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 5 && !voice.isPlaying()){
+            else if (substate == 6 && !voice.isPlaying()){
                 queueNextState(1000);
             }
             break;
@@ -917,12 +958,22 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/2_13.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
+
+
+            else if (substate == 3 && !video.isPlaying()){
                 state = DONE;
                 substate = 0;
             }
@@ -1010,17 +1061,22 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_4.mp4");
                 video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(0.1);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2 && !voice.isPlaying()){
+
+            else if (substate == 3 && !voice.isPlaying()){
                 queueNextState(1000);
             }
             break;
@@ -1030,16 +1086,22 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_5.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2 && !voice.isPlaying()){
+
+            else if (substate == 3 && !voice.isPlaying()){
                 queueNextState(1000);
             }
             break;
@@ -1064,16 +1126,22 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_10.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2 && !voice.isPlaying()){
+
+            else if (substate == 3 && !voice.isPlaying()){
                 queueNextState(1000);
             }
             break;
@@ -1095,20 +1163,26 @@ void ofApp::update(){
             if (substate == 0 && !voice.isPlaying()){
                 video.load("audio/prerecorded/3_14.mp4");
                 video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
                 video.play();
                 nextSubstate();
             }
 
-            else if (substate == 1 && !video.isPlaying()){
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 2 && !voice.isPlaying()){
+
+            else if (substate == 3 && !voice.isPlaying()){
                 queueNextSubstate(1000);
             }
 
-            else if (substate == 3 && !voice.isPlaying()){
+            else if (substate == 4 && !voice.isPlaying()){
                 state = DONE;
                 substate = 0;
             }

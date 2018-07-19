@@ -37,14 +37,12 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 
-
 		void drawSmileStats();
 		void checkWait();
 		void nextState();
 		void nextSubstate();
 		void queueNextState(int millis);
 		void queueNextSubstate(int millis);
-
 
 		void sayMonthName();
 		void sayDayNumber();
@@ -53,6 +51,8 @@ class ofApp : public ofBaseApp{
 		// string urlResponse(ofHttpResponse &httpResponse);
 
 		int num_faces;
+		int prev_num_faces;
+		float last_face_time;
 		float r; // used to store random float to make choices
 		float r2; // used to store random float to make choices
 
