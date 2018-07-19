@@ -65,6 +65,8 @@ void ofApp::setup(){
     num_faces = 0;
     smileLoops = 0;
 
+    sayReady = true; // make sure viola says something during the first loop of IDLE
+
     video.setLoopState(OF_LOOP_NONE);
 
     nextStateNumber = state;
@@ -130,8 +132,12 @@ void ofApp::update(){
         default:
         case IDLE:
             if(!voice.isPlaying()){
-
                 r = ofRandomuf();
+                if (sayReady){
+                    sayReady = false;
+                    r = 0.0003;
+                }
+
                 if (r < 0.0002){
                     //say Is anyone there?
                     playAudio("is-anyone-there_1f6c9463.mp3");
@@ -140,9 +146,6 @@ void ofApp::update(){
                     playAudio("hello_dedd3af5.mp3");
                 }
             }
-        break;
-
-        case LOST:
         break;
 
         case DONE:
@@ -168,6 +171,7 @@ void ofApp::update(){
                 if (num_face == 0 && (ofGetElapsedTimef()-last_face_time) > 15.0){
                     state = IDLE;
                     substate = 0;
+                    sayReady = true; // make sure viola says something during the first loop of IDLE
                }
             }
 

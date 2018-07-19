@@ -50,6 +50,8 @@ class ofApp : public ofBaseApp{
 
 		// string urlResponse(ofHttpResponse &httpResponse);
 
+		bool sayReady;
+
 		int num_faces;
 		int prev_num_faces;
 		float last_face_time;
