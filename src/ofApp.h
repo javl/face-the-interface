@@ -47,10 +47,14 @@ class ofApp : public ofBaseApp{
 		void sayMonthName();
 		void sayDayNumber();
 		void sayDayName();
+		bool voiceDone();
 
 		// string urlResponse(ofHttpResponse &httpResponse);
 
 		bool sayReady;
+
+		// debug stuff
+		bool cursor;
 
 		int num_faces;
 		int prev_num_faces;
