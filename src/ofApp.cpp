@@ -53,7 +53,7 @@ void ofApp::setup(){
     substate = 0;
 
     //debug
-    state = PATH_3_1;
+    state = PATH_3_3;
 
     path = 0;
     num_faces = 0;
@@ -1088,7 +1088,7 @@ void ofApp::update(){
             break;
 
         case PATH_3_3:
-            if (substate == 0 && voiceDone()){
+            if (substate == 0){
                 //say This experience is brought to you by Auto Flow, the online data streaming service
                 playAudio("this-experience-is-brought-to-you-by-auto-flow-the-online-data-s_dbf30ad8.mp3");
                 nextSubstate();
@@ -1255,11 +1255,7 @@ void ofApp::draw(){
     if(video.isPlaying()){
         ofSetColor(255);
         video.draw(0, 0);
-        //if(video.getPosition() == 1.0){
-        //    video.close();
-        //}
     }
-
     switch (state){
         case INTRO_1:
             if (substate >= 16){
@@ -1319,18 +1315,18 @@ void ofApp::draw(){
             break;
 
         case PATH_2_3:
-        case PATH_2_4:
             tracker.drawDebugStylized();
             break;
 
-        // case PATH_2_13:
-            // tracker.drawDebugStylized();
-            // break;
+        case PATH_2_4:
+            tracker.drawDebugStylized();
+            break;
 
         case PATH_3_6:
             tracker.drawDebugStylized();
             drawStocks();
             break;
+
         case PATH_3_1:
         case PATH_3_2:
         case PATH_3_3:
@@ -1348,7 +1344,7 @@ void ofApp::draw(){
             break;
 
         default:
-        break;
+            break;
     }
 
     //debug
@@ -1418,8 +1414,8 @@ void ofApp::takeSneakyImage() {
 }
 
 void ofApp::drawStocks(){
-    ofBackground(0);
     ofPushMatrix();
+    ofPushStyle();
     ofSetColor(255);
     ofDrawRectangle(0, 0, ofGetWidth(), 115);
     ofTranslate(stocksX, stocksY);
@@ -1428,6 +1424,7 @@ void ofApp::drawStocks(){
         stocksX = ofGetWidth();
     }
     stocks.draw();
+    ofPopStyle();
     ofPopMatrix();
 }
 
