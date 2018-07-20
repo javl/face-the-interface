@@ -177,7 +177,7 @@ void ofApp::update(){
             }
 
             else if (substate == 3){
-                playAudioFile("prerecorded/disclaimer.aiff");
+                playAudioFile("prerecorded/disclaimer.mp3");
                 nextSubstate();
             }
 
