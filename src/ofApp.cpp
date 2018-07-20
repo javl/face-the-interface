@@ -173,22 +173,19 @@ void ofApp::update(){
 
             else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
-                state = DISCLAIMER;
-                substate = 0;
+                nextSubstate();
             }
-            break;
 
-        case DISCLAIMER:
-            if (substate == 0){
+            else if (substate == 3){
                 playAudioFile("prerecorded/disclaimer.aiff");
                 nextSubstate();
             }
 
-            else if (substate == 1 && voiceDone()){
+            else if (substate == 4 && voiceDone()){
                 nextSubstate();
             }
 
-            else if(substate == 2){
+            else if(substate == 5){
                 // stay in this mode until we haven't seen a face in for seconds
                 if (num_faces == 0 && (ofGetElapsedTimef()-last_face_time) > 15.0){
                     state = IDLE;
@@ -197,7 +194,8 @@ void ofApp::update(){
                }
             }
 
-        break;
+            break;
+
 
 //==================================================================================================
 //==================================================================================================
@@ -1354,11 +1352,11 @@ void ofApp::draw(){
     }
 
     //debug
-    // ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
-    // ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
-    // ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
-    // ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
-    // ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
+    ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
+    ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
+    ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
+    ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
+    ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
 
 
 }
@@ -1456,8 +1454,8 @@ void ofApp::playNumber(int number){
 }
 
 bool ofApp::voiceDone(){
-    ofLog() << "voice.isLoaded(): " << voice.isLoaded();
-    ofLog() << "voice.isPlaying(): " << voice.isPlaying();
+    // ofLog() << "voice.isLoaded(): " << voice.isLoaded();
+    // ofLog() << "voice.isPlaying(): " << voice.isPlaying();
     return (voice.isLoaded() && !voice.isPlaying());
 }
 
