@@ -53,7 +53,7 @@ void ofApp::setup(){
     substate = 0;
 
     //debug
-    state = PATH_3_3;
+    // state = PATH_3_3;
 
     path = 0;
     num_faces = 0;
@@ -1348,11 +1348,11 @@ void ofApp::draw(){
     }
 
     //debug
-    ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
-    ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
-    ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
-    ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
-    ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
+    // ofDrawBitmapStringHighlight("State   : "+ofToString(state), 10, 20);
+    // ofDrawBitmapStringHighlight("Substate: "+ofToString(substate), 10, 40);
+    // ofDrawBitmapStringHighlight("voice   : "+ofToString(voice.isPlaying()), 10, 60);
+    // ofDrawBitmapStringHighlight("timer   : "+ofToString(timer.isTimerRunning()), 10, 80);
+    // ofDrawBitmapStringHighlight("faces   : "+ofToString(num_faces), 10, 100);
 
 
 }
