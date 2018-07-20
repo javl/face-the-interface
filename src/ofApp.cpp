@@ -43,7 +43,7 @@
 #define PATH_3_13 313
 #define PATH_3_14 314
 
-#define VIDEO_VOLUME 0.2
+#define VIDEO_VOLUME 0.5
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -53,7 +53,7 @@ void ofApp::setup(){
     substate = 0;
 
     //debug
-    // state = PATH_1_4;
+    state = PATH_3_1;
 
     path = 0;
     num_faces = 0;
@@ -1030,18 +1030,18 @@ void ofApp::update(){
 //==================================================================================================
 //==================================================================================================
         case PATH_3_1:
-            if (substate == 0 && voiceDone()){
+            if (substate == 0){
                 nextState();
             }
             break;
 
         case PATH_3_2:
-            if (substate == 0 && voiceDone()){
+            if (substate == 0){
                 currentTemp = getCurrentTemperature();
                 nextSubstate();
             }
 
-            else if (substate == 1 && voiceDone()){
+            else if (substate == 1){
                 //say Most people find the current temperature of
                 playAudio("most-people-find-the-current-temperature-of_d60c8b90.mp3");
                 nextSubstate();
@@ -1423,7 +1423,7 @@ void ofApp::drawStocks(){
     ofSetColor(255);
     ofDrawRectangle(0, 0, ofGetWidth(), 115);
     ofTranslate(stocksX, stocksY);
-    stocksX-=2;
+    stocksX-=5;
     if(stocksX < stocks.getWidth() * -1){
         stocksX = ofGetWidth();
     }
