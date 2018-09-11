@@ -6,5 +6,6 @@ bin/data/shape_predictor_68_face_landmarks.dat
 /bin/libfmodex.so
 /openFrameworks.sublime-workspace
 /bin/data/new_audio/*
-/bin/face-the-interface.app
+/bin/face-the-interface.app/*
+/bin/face-the-interfaceDebug.app/*
 .DS_Store
