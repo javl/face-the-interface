@@ -300,7 +300,7 @@ void ofApp::update(){
 
             else if (substate == 2 && voiceDone()){
                 takeSneakyImage();
-                if (smallSmileValue.value() > 0.5 || bigSmileValue.value() > 0.5){
+                if (smallSmileValue.value() > 0.4 || bigSmileValue.value() > 0.4){
                     wasSmiling = true;
                 }else{
                     wasSmiling = false;
@@ -753,7 +753,7 @@ void ofApp::update(){
             }
 
             else if (substate == 4){
-                if (smallSmileValue.value() > 0.5 || bigSmileValue.value() > 0.5){
+                if (smallSmileValue.value() > 0.4 || bigSmileValue.value() > 0.4){
                     wasSmiling = true;
                 }else{
                     wasSmiling = false;
