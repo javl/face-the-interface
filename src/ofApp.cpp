@@ -13,6 +13,7 @@
 #define PATH_1_3 103
 #define PATH_1_4 104
 #define PATH_1_5 105
+#define PATH_1_6 106
 
 #define PATH_2_1 201
 #define PATH_2_2 202
@@ -38,31 +39,33 @@
 #define PATH_3_8 308
 #define PATH_3_9 309
 #define PATH_3_10 310
-#define PATH_3_11 311
-#define PATH_3_12 312
-#define PATH_3_13 313
-#define PATH_3_14 314
 
 #define VIDEO_VOLUME 0.5
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofHideCursor();
 
+    // city = "amsterdam";
+    city = "den haag";
+    currentTemp = 28;
+    tempFromInternet = true; // set to false to always use the preset temperature
+
+
+    ofHideCursor();
     state = IDLE;
     substate = 0;
 
     //debug
-    // state = PATH_3_3;
+    // state = PATH_1_1;
 
     path = 0;
     num_faces = 0;
     smileLoops = 0;
     sayReady = true; // make sure viola says something during the first loop of IDLE
 
-    stocks.load("stocks_shape.svg");
-    stocksX = ofGetWidth();
-    stocksY = 6;
+    // stocks.load("stocks_shape.svg");
+    // stocksX = ofGetWidth();
+    // stocksY = 6;
 
     ofSetWindowPosition(1920, 0);
 
@@ -71,8 +74,6 @@ void ofApp::setup(){
 
     ofSetVerticalSync(true);
     ofSetBackgroundColor(0);
-
-
 
     video.setLoopState(OF_LOOP_NONE);
 
@@ -159,33 +160,16 @@ void ofApp::update(){
         break;
 
         case DONE:
-            if (substate == 0 && !video.isPlaying()){
-                video.load("audio/prerecorded/done.mp4");
-                video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(VIDEO_VOLUME);
-                video.play();
-                nextSubstate();
-            }
-
-            else if (substate == 1 && video.isLoaded()){
-                nextSubstate();
-            }
-
-            else if (substate == 2 && video.getIsMovieDone()){
-                video.close();
-                nextSubstate();
-            }
-
-            else if (substate == 3){
+            if (substate == 0){
                 playAudioFile("prerecorded/disclaimer.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 4 && voiceDone()){
+            else if (substate == 1 && voiceDone()){
                 nextSubstate();
             }
 
-            else if(substate == 5){
+            else if(substate == 2){
                 // stay in this mode until we haven't seen a face in for seconds
                 if (num_faces == 0 && (ofGetElapsedTimef()-last_face_time) > 15.0){
                     state = IDLE;
@@ -273,7 +257,7 @@ void ofApp::update(){
             }
 
             else if (substate == 13 && voiceDone()){
-                video.load("audio/prerecorded/loadingCircleFlat.mp4");
+                video.load("audio/prerecorded/loadingCircle.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -296,27 +280,6 @@ void ofApp::update(){
             }
 
             else if (substate == 17 && voiceDone()){
-                queueNextSubstate(1000);
-            }
-
-            else if (substate == 18 && voiceDone()){
-                //say Human. You are
-                playAudio("human-you-are_21647cb6.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 19 && voiceDone()){
-                if (ofRandomuf() < 0.5){
-                    //say Late
-                    playAudio("late_d9359722.mp3");
-                }else {
-                    //say Right on time
-                    playAudio("right-on-time_a2f4c60f.mp3");
-                }
-                nextSubstate();
-            }
-
-            else if (substate == 20 && voiceDone()){
                 queueNextState(2000);
             }
 
@@ -346,28 +309,46 @@ void ofApp::update(){
             }
 
             else if (substate == 3 && voiceDone()){
-                if(wasSmiling){
-                    //say Really?
-                    playAudio("really_e02f73c2.mp3");
-                } else {
-                    //say Your smile is hard to read.
-                    playAudio("your-smile-is-hard-to-read_b433736f.mp3");
-                }
+                video.load("audio/prerecorded/s2.mp4");
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
+                video.play();
                 nextSubstate();
             }
 
-            else if (substate == 4 && voiceDone()){
+            else if (substate == 4 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 5 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
+
+            else if (substate == 6 && voiceDone()){
                 if(wasSmiling){
-                    //say People don't take you seriously when you smile.
-                    playAudio("people-dont-take-you-seriously-when-you-smile_beb3fa8a.mp3");
+                    r = ofRandomuf();
+                    if(r < 0.5){
+                        //say People don't take you seriously when you smile.
+                        playAudio("people-dont-take-you-seriously-when-you-smile_beb3fa8a.mp3");
+                    }else{
+                        //say Well done.
+                        playAudio("well-done_62a028a4.mp3");
+                    }
                 }else{
-                    //say Your interface is expressionless.
-                    playAudio("your-interface-is-expressionless_f26381ca.mp3");
+                    r = ofRandomuf();
+                    if(r < 0.5){
+                        //say Your interface is expressionless.
+                        playAudio("your-interface-is-expressionless_f26381ca.mp3");
+                    }else{
+                        //say Your smile is hard to read.
+                        playAudio("your-smile-is-hard-to-read_b433736f.mp3");
+                    }
                 }
                 nextSubstate();
             }
 
-            else if (substate == 5 && voiceDone()){
+            else if (substate == 7 && voiceDone()){
                 queueNextState(2000);
             }
 
@@ -377,7 +358,7 @@ void ofApp::update(){
         case INTRO_3:
 
             if (substate == 0){
-                video.load("audio/prerecorded/loadingCircleFlat.mp4");
+                video.load("audio/prerecorded/loadingCircle.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -463,19 +444,43 @@ void ofApp::update(){
 //==================================================================================================
         case PATH_1_1:
             if (substate == 0 && voiceDone()){
-                video.load("audio/prerecorded/1_1.mp4");
-                video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(VIDEO_VOLUME);
-                video.play();
-                nextSubstate();
-            }
-            else if (substate == 1 && video.isLoaded()){
+                //say close your eyes
+                playAudio("close-your-eyes_f853d797.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 2 && video.getIsMovieDone()){
-                video.close();
-                nextState();
+            else if (substate == 1 && voiceDone()){
+                queueNextSubstate(2000);
+            }
+
+            else if (substate == 2 && voiceDone()){
+                //say identifying and extracting the landmarks of your face
+                playAudio("identifying-and-extracting-the-landmarks-of-your-face_b2e8ffa0.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 3 && voiceDone()){
+                queueNextSubstate(800);
+            }
+
+            else if (substate == 4 && voiceDone()){
+                //say nose, cheekbones, eyes
+                playAudio("nose-cheekbones-eyes_263bdff4.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 5 && voiceDone()){
+                queueNextSubstate(2000);
+            }
+
+            else if (substate == 6 && voiceDone()){
+                //say each face is a unique map
+                playAudio("each-face-is-a-unique-map_587a1f07.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 7 && voiceDone()){
+                queueNextState(2500);
             }
 
             break;
@@ -495,7 +500,9 @@ void ofApp::update(){
                 else if(behavior_social.size() < 100){
                     behavior_social = " " + behavior_social;
                 }
-                behavior_moral = ofToString(int(ofRandom(100)));
+
+                r = int(ofRandomuf() * 100);
+                behavior_moral = ofToString(r);
                 if(behavior_moral.size() < 10){
                     behavior_moral = "  " + behavior_moral;
                 }
@@ -563,31 +570,14 @@ void ofApp::update(){
                 queueNextSubstate(2000);
             }
 
+
             else if (substate == 5 && voiceDone()){
-                //say Reviewing
-                playAudio("reviewing_4827b311.mp3");
-                r = 2 + ofRandom(4);
+                //say Do you think you can be trusted?
+                playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
                 nextSubstate();
             }
 
             else if (substate == 6 && voiceDone()){
-                playNumber(int(r));
-                nextSubstate();
-            }
-
-            else if (substate == 7 && voiceDone()){
-                //say cases
-                playAudio("cases_c78bd47f.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 8 && voiceDone()){
-                //say of possible unwanted behavior
-                playAudio("of-possible-unwanted-behavior_afcbb134.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 9 && voiceDone()){
                 video.load("video/counterDots.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
@@ -595,54 +585,43 @@ void ofApp::update(){
                 nextSubstate();
             }
 
-            else if (substate == 10 && video.isLoaded()){
+            else if (substate == 7 && video.isLoaded()){
                 nextSubstate();
             }
 
-            else if (substate == 11 && video.getIsMovieDone()){
+            else if (substate == 8 && video.getIsMovieDone()){
                 video.close();
                 nextSubstate();
             }
 
-            else if (substate == 12 && voiceDone()){
-                //say Do you think you can be trusted?
-                playAudio("do-you-think-you-can-be-trusted_dfd6a679.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 13 && voiceDone()){
-                queueNextSubstate(1000);
-            }
-
-            else if (substate == 14 && voiceDone()){
+            else if (substate == 9 && voiceDone()){
                 //say Your moral score based on social associations is:
                 playAudio("your-moral-score-based-on-social-associations-is_f08fe98a.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 10 && voiceDone()){
+                playNumber(r);
                 r = ofRandomuf();
                 nextSubstate();
             }
 
-            else if (substate == 15 && voiceDone()){
-                playNumber(int(r * 100));
-                r = ofRandomuf();
-                nextSubstate();
-            }
-
-            else if (substate == 16 && voiceDone()){
+            else if (substate == 11 && voiceDone()){
                 queueNextSubstate(1000);
             }
 
-            else if (substate == 17 && voiceDone()){
+            else if (substate == 12 && voiceDone()){
                 //say Hence your
                 playAudio("hence-your_ffe5ebe8.mp3");
                 r = ofRandomuf();
                 nextSubstate();
             }
 
-            else if (substate == 18 && voiceDone()){
-                if(r < 0.33){
+            else if (substate == 13 && voiceDone()){
+                if(r < 33){
                     //say poor
                     playAudio("poor_5cffaf93.mp3");
-                }else if(r < 0.66){
+                }else if(r < 66){
                     //say mediocre
                     playAudio("mediocre_a741acb6.mp3");
                 }else {
@@ -652,35 +631,15 @@ void ofApp::update(){
                 nextSubstate();
             }
 
-            else if (substate == 19 && voiceDone()){
+            else if (substate == 14 && voiceDone()){
                 //say reflection
                 playAudio("reflection_40f3468c.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 20 && voiceDone()){
-                queueNextSubstate(2000);
-            }
-
-            else if (substate == 21 && voiceDone()){
-                r = ofRandomuf();
-                //say Your friends have an average moral score of:
-                playAudio("your-friends-have-an-average-moral-score-of_51a43800.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 22 && voiceDone()){
-                playNumber(int(r*100));
-                nextSubstate();
-            }
-
-            else if (substate == 23 && voiceDone()){
-                queueNextSubstate(4000);
-            }
-
-            else if (substate == 24 && voiceDone()){
+             else if (substate == 15 && voiceDone()){
                 dataSendStart = ofGetElapsedTimef();
-                nextState();
+                queueNextState(1000);
             }
 
             break;
@@ -701,6 +660,26 @@ void ofApp::update(){
         case PATH_1_5:
             if (substate == 0){
                 video.load("audio/prerecorded/1_5.mp4");
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
+                video.play();
+                nextSubstate();
+            }
+
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
+                video.close();
+                nextState();
+            }
+            break;
+
+        case PATH_1_6:
+
+            if (substate == 0){
+                video.load("audio/prerecorded/1_6.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -784,118 +763,106 @@ void ofApp::update(){
 
             else if (substate == 5 && voiceDone()){
                 if(wasSmiling){
-                    //say Thank you, that is beautiful
-                    playAudio("thank-you-that-is-beautiful_558cb503.mp3");
-                    nextSubstate();
-                }else{
-                    //say Why don’t you smile?
-                    playAudio("why-dont-you-smile_c286752c.mp3");
-                    nextSubstate();
+                    if (smileLoops == 0){
+                        //say Thank you, that is beautiful
+                        playAudio("thank-you-that-is-beautiful_558cb503.mp3");
+                        nextState();
+                    }else{
+                        //say Thank you, that's convincing
+                        playAudio("thank-you-thats-convincing_65938f21.mp3");
+                        nextState();
+                    }
+                } else {
+                    if(smileLoops < 2){ // loop 3 times
+                        smileLoops++;
+                        //say Try again
+                        playAudio("try-again_f915a95e.mp3");
+                        substate = 3;
+                    }else{
+                        smileLoops = 0;
+                        //say Nevermind
+                        playAudio("nevermind_17f956b3.mp3");
+                        nextSubstate();
+                    }
                 }
             }
 
             else if (substate == 6 && voiceDone()){
-                if(wasSmiling){
-                    if(smileLoops < 2){ // loop 3 times
-                        smileLoops++;
-                        //say Can you do that again?
-                        playAudio("can-you-do-that-again_140c2219.mp3");
-                        substate = 3;
-                    }else{
-                        smileLoops = 0;
-                        nextSubstate();
-                    }
-                }else{
-                    //say Am I insulting you?
-                    playAudio("am-i-insulting-you_cc49baa2.mp3");
-                    nextSubstate();
-                }
-            }
-
-            else if (substate == 7 && voiceDone()){
                 queueNextState(1000);
             }
 
             break;
 //==================================================================================================
         case PATH_2_3:
-            nextState();
-            break;
-//==================================================================================================
-        case PATH_2_4:
             if (substate == 0 && voiceDone()){
-                queueNextState(7000);
+                queueNextSubstate(7000);
             }
-            break;
-//==================================================================================================
-        case PATH_2_5:
-            if (substate == 0 && voiceDone()){
+
+            else if (substate == 1 && voiceDone()){
                 takeSneakyImage();
                 playAudioFile("prerecorded/camera-shutter-click-01.mp3");
                 nextSubstate();
             }
 
-            else if (substate == 1 && voiceDone()){
+            else if (substate == 2 && voiceDone()){
                 nextState();
             }
+            break;
+//==================================================================================================
+        case PATH_2_4:
+            if (substate == 0){
+                // wish I was as complex as you
+                // can you show me how to smile
+                video.load("audio/prerecorded/2_4.mp4");
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
+                video.play();
+                nextSubstate();
+            }
+
+            else if (substate == 1 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
 
             break;
+//==================================================================================================
+        case PATH_2_5:
+            if (substate == 0 && voiceDone()){
+                //say There are 7635783240 faces in the world. But I’m still looking at, you.
+                playAudio("there-are-7635783240-faces-in-the-world-but-im-still-looking-at-_fe01b16e.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 1 && voiceDone()){
+                // there's something wrong with your reflection
+                video.load("audio/prerecorded/2_5.mp4");
+                video.setLoopState(OF_LOOP_NONE);
+                video.setVolume(VIDEO_VOLUME);
+                video.play();
+                nextSubstate();
+            }
+
+            else if (substate == 2 && video.isLoaded()){
+                nextSubstate();
+            }
+
+            else if (substate == 3 && video.getIsMovieDone()){
+                video.close();
+                nextSubstate();
+            }
+
+            else if (substate == 4 && voiceDone()){
+                queueNextState(1000);
+            }
+            break;
+
 //==================================================================================================
         case PATH_2_6:
-            if (substate == 0 && voiceDone()){
-                //say Don’t you love taking selfies?
-                playAudio("dont-you-love-taking-selfies_c7aab442.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 1 && voiceDone()){
-                queueNextSubstate(1000);
-            }
-
-            else if (substate == 2 && voiceDone()){
-                //say Do you feel like you’re not really present without them?
-                playAudio("do-you-feel-like-youre-not-really-present-without-them_f92d2d75.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 3 && voiceDone()){
-                queueNextState(1000);
-            }
-
-            break;
-
-//==================================================================================================
-        case PATH_2_7:
-            if (substate == 0 && voiceDone()){
-                //say Calculating recent interactions in the virtual public domain
-                playAudio("calculating-recent-interactions-in-the-virtual-public-domain_bae523c5.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 1 && voiceDone()){
-                queueNextSubstate(1000);
-            }
-
-            else if (substate == 2 && voiceDone()){
-                //say Loading: behaviour on webshops, cookies, adblockers, the public domain.
-                playAudio("loading-behaviour-on-webshops-cookies-adblockers-the-public-doma_3a92bbb0.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 3 && voiceDone()){
-                queueNextState(1000);
-            }
-
-            break;
-
-//==================================================================================================
-        case PATH_2_8:
-            // to fix wrong numbering in word file
-            nextState();
-            break;
-
-//==================================================================================================
-        case PATH_2_9:
             if (substate == 0 && voiceDone()){
                 r = ofRandomuf();
                 //say Your reflection is considered
@@ -914,99 +881,23 @@ void ofApp::update(){
                     //say neutral
                     playAudio("neutral_5da248ea.mp3");
                 }else{
-                    //say forgettable
-                    playAudio("forgettable_8fae639e.mp3");
+                    //say unforgettable
+                    playAudio("unforgettable_5c4e8c01.mp3");
                 }
                 nextSubstate();
             }
 
             else if (substate == 2 && voiceDone()){
-                //say but I like looking at you
-                playAudio("but-i-like-looking-at-you_c3e8f49e.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 3 && voiceDone()){
                 queueNextState(1000);
             }
             break;
 
-//==================================================================================================
-        case PATH_2_10:
-            if (substate == 0){
-                // listen to this ... i'm viola jones
-                video.load("audio/prerecorded/2_10.mp4");
-                video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(VIDEO_VOLUME);
-                video.play();
-                nextSubstate();
-            }
-
-            else if (substate == 1 && video.isLoaded()){
-                nextSubstate();
-            }
-
-            else if (substate == 2 && video.getIsMovieDone()){
-                video.close();
-                nextState();
-            }
-
-            break;
 
 //==================================================================================================
-        case PATH_2_11:
-            // to fix wrong numbering in word file
-            nextState();
-            break;
-
-//==================================================================================================
-        case PATH_2_12:
-            if (substate == 0 && voiceDone()){
-                //say There are 7635783240 people in the world. But I’m still looking at, you.
-                playAudio("there-are-7635783240-people-in-the-world-but-im-still-looking-at_904e2ac5.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 1 && voiceDone()){
-                // there's something wrong with your reflection
-                video.load("audio/prerecorded/2_12.mp4");
-                video.setLoopState(OF_LOOP_NONE);
-                video.setVolume(VIDEO_VOLUME);
-                video.play();
-                nextSubstate();
-            }
-
-            else if (substate == 2 && video.isLoaded()){
-                nextSubstate();
-            }
-
-            else if (substate == 3 && video.getIsMovieDone()){
-                video.close();
-                nextSubstate();
-            }
-
-            else if (substate == 4 && voiceDone()){
-                //say There are over 1000 people with your kind of visual make-up.
-                playAudio("there-are-over-1000-people-with-your-kind-of-visual-makeup_73b39acd.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 5 && voiceDone()){
-                //say People like, you. I couldn’t care less.
-                playAudio("people-like-you-i-couldnt-care-less_b8f05b99.mp3");
-                nextSubstate();
-            }
-
-            else if (substate == 6 && voiceDone()){
-                queueNextState(1000);
-            }
-            break;
-
-//==================================================================================================
-        case PATH_2_13:
+        case PATH_2_7:
             if (substate == 0){
                 // stickers
-                video.load("audio/prerecorded/2_13.mp4");
+                video.load("audio/prerecorded/2_7.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -1023,7 +914,8 @@ void ofApp::update(){
                 substate = 0;
             }
 
-            break;
+        break;
+
 //==================================================================================================
 
 
@@ -1031,8 +923,34 @@ void ofApp::update(){
 //==================================================================================================
         case PATH_3_1:
             if (substate == 0){
+                currentTemp = getCurrentTemperature();
+                nextSubstate();
+            }
+            else if (substate == 1 && voiceDone()){
+                //say Current temperature at location is
+                playAudio("current-temperature-at-location-is_f044b0f4.mp3");
+                nextSubstate();
+            }
+            else if (substate == 2 && voiceDone()){
+                playNumber(int(currentTemp));
+                nextSubstate();
+            }
+            else if (substate == 3 && voiceDone()){
+                //say degrees
+                playAudio("degrees_18daee01.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 4 && voiceDone()){
+                //say celcius
+                playAudio("celcius_ac035f30.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 5 && voiceDone()){
                 nextState();
             }
+
             break;
 
         case PATH_3_2:
@@ -1042,8 +960,8 @@ void ofApp::update(){
             }
 
             else if (substate == 1){
-                //say Most people find the current temperature of
-                playAudio("most-people-find-the-current-temperature-of_d60c8b90.mp3");
+                //say Most faces find
+                playAudio("most-faces-find_dccc6db2.mp3");
                 nextSubstate();
             }
 
@@ -1116,6 +1034,7 @@ void ofApp::update(){
             }
 
             break;
+
         case PATH_3_4:
             if (substate == 0){
                 video.load("audio/prerecorded/3_4.mp4");
@@ -1167,19 +1086,80 @@ void ofApp::update(){
                 queueNextState(3000);
             }
             break;
+
         case PATH_3_7:
-            nextState();
+            if (substate == 0 && voiceDone()){
+
+                behavior_downloads = "  "+ofToString(int(ofRandom(10)));
+                behavior_social = ofToString(int(ofRandom(200)));
+                if(behavior_social.size() < 10){
+                    behavior_social = "  " + behavior_social;
+                }
+                else if(behavior_social.size() < 100){
+                    behavior_social = " " + behavior_social;
+                }
+                behavior_privacy_act = "  "+ofToString(int(ofRandom(4)));
+
+                behavior_moral = ofToString(int(ofRandom(100)));
+                if(behavior_moral.size() < 10){
+                    behavior_moral = "  " + behavior_moral;
+                }
+
+                //say Calculating recent interactions in the virtual public domain
+                playAudio("calculating-recent-interactions-in-the-virtual-public-domain_bae523c5.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 1 && voiceDone()){
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 2 && voiceDone()){
+                //say Loading: behaviour on webshops, cookies, adblockers, the public domain.
+                playAudio("loading-behaviour-on-webshops-cookies-adblockers-the-public-doma_3a92bbb0.mp3");
+                nextSubstate();
+            }
+
+            else if (substate == 3 && voiceDone()){
+                queueNextSubstate(1000);
+            }
+
+            else if (substate == 4 && voiceDone()){
+                //say Faces like yours are likely to
+                playAudio("faces-like-yours-are-likely-to_3af01064.mp3");
+                r = ofRandomuf();
+                nextSubstate();
+            }
+
+            else if (substate == 5 && voiceDone()){
+                if(r < 0.25){
+                    //say spend more than they can afford
+                    playAudio("spend-more-than-they-can-afford_08f20a17.mp3");
+                }else if(r < 0.5){
+                    //say be material istic
+                    playAudio("be-material-istic_1a920f6f.mp3");
+                }else if(r < 0.75){
+                    //say commit crime
+                    playAudio("commit-crime_f7b9de44.mp3");
+                }else{
+                    //say obey
+                    playAudio("obey_b678b9b0.mp3");
+                }
+                nextSubstate();
+            }
+
+            else if (substate == 6 && voiceDone()){
+                queueNextState(1000);
+            }
             break;
+
         case PATH_3_8:
             nextState();
             break;
-        case PATH_3_9:
-            nextState();
-            break;
 
-        case PATH_3_10:
+        case PATH_3_9:
             if (substate == 0){
-                video.load("audio/prerecorded/3_10.mp4");
+                video.load("audio/prerecorded/3_9.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -1200,21 +1180,14 @@ void ofApp::update(){
             }
             break;
 
-        case PATH_3_11:
-            nextState(); // fix for incorrect numbering in word file
-            break;
-
-        case PATH_3_12:
-            nextState(); // fix for incorrect numbering in word file
-            break;
-
-        case PATH_3_13:
-            nextState(); // fix for incorrect numbering in word file
-            break;
-
-        case PATH_3_14:
+        case PATH_3_10:
             if (substate == 0){
-                video.load("audio/prerecorded/3_14.mp4");
+                r = ofRandomuf();
+                if(r < 0.5){
+                    video.load("audio/prerecorded/3_10_A.mp4");
+                }else{
+                    video.load("audio/prerecorded/3_10_B.mp4");
+                }
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
@@ -1240,6 +1213,7 @@ void ofApp::update(){
             }
             break;
     }
+
     voicePlaying = voice.isPlaying();
 
 }
@@ -1256,17 +1230,18 @@ void ofApp::draw(){
         ofSetColor(255);
         video.draw(0, 0);
     }
+    tracker.drawDebug();
     switch (state){
         case INTRO_1:
             if (substate >= 16){
-                tracker.drawDebug();
+                // tracker.drawDebug();
             }
             break;
 
         case INTRO_2:
             if (substate < 3){
                 // video.draw((ofGetWidth() - video.getWidth())/2.0, (ofGetHeight() - video.getHeight())/2.0);
-                tracker.drawDebug();
+                // tracker.drawDebug();
                 drawSmileStats();
             }
             break;
@@ -1314,34 +1289,50 @@ void ofApp::draw(){
             sneakyImage.draw(0, (ofGetHeight()/2.0) - (sneaky_h/2.0), sneaky_w, sneaky_h);
             break;
 
+        case PATH_2_2:
+            if(substate > 2 && substate < 5){
+                drawSmileStats();
+            }
+            break;
+
         case PATH_2_3:
             tracker.drawDebugStylized();
             break;
 
-        case PATH_2_4:
+        case PATH_2_13:
             tracker.drawDebugStylized();
+            break;
+
+        case PATH_3_7:
+
+            if (substate > 1 && substate < 4){
+                fontTechnical.drawString("Illegal downloads:      " + behavior_downloads, 10, 100);
+                fontTechnical.drawString("Social currency:         " + behavior_social, 10, 200);
+                fontTechnical.drawString("Violations of privacy act:" + behavior_privacy_act, 10, 300);
+                fontTechnical.drawString("Current moral score:     " + behavior_moral, 10, 400);
+            }
             break;
 
         case PATH_3_6:
             tracker.drawDebugStylized();
-            drawStocks();
+            // drawStocks();
             break;
 
-        case PATH_3_1:
-        case PATH_3_2:
-        case PATH_3_3:
-        case PATH_3_4:
-        case PATH_3_5:
-        case PATH_3_7:
-        case PATH_3_8:
-        case PATH_3_9:
-        case PATH_3_10:
-        case PATH_3_11:
-        case PATH_3_12:
-        case PATH_3_13:
-        case PATH_3_14:
-            drawStocks();
-            break;
+        // case PATH_3_1:
+        // case PATH_3_2:
+        // case PATH_3_3:
+        // case PATH_3_4:
+        // case PATH_3_5:
+        // case PATH_3_7:
+        // case PATH_3_8:
+        // case PATH_3_9:
+        // case PATH_3_10:
+        // case PATH_3_11:
+        // case PATH_3_12:
+        // case PATH_3_13:
+        // case PATH_3_14:
+        //     drawStocks();
+        //     break;
 
         default:
             break;
@@ -1451,9 +1442,8 @@ void ofApp::playNumber(int number){
 }
 
 bool ofApp::voiceDone(){
-    // ofLog() << "voice.isLoaded(): " << voice.isLoaded();
-    // ofLog() << "voice.isPlaying(): " << voice.isPlaying();
-    return (voice.isLoaded() && !voice.isPlaying());
+    // return (voice.isLoaded() && !voice.isPlaying());
+    return (!voice.isLoaded() || (voice.isLoaded() && !voice.isPlaying()));
 }
 
 void ofApp::drawSmileStats(){
@@ -1786,11 +1776,15 @@ void ofApp::keyReleased(int key){
 }
 
 int ofApp::getCurrentTemperature(){
+    if(!tempFromInternet){
+        return currentTemp;
+    }
+
     ofXml tempXml;
     int temp;
 
     // Do not reuse this API key for any other projects
-    ofHttpResponse resp = ofLoadURL("https://api.openweathermap.org/data/2.5/weather?id=2759794&mode=xml&units=metric&appid=0834fca6801ebf806a7495e1cc28536b");
+    ofHttpResponse resp = ofLoadURL("https://api.openweathermap.org/data/2.5/weather?q="+city+"&mode=xml&units=metric&appid=0834fca6801ebf806a7495e1cc28536b");
     tempXml.load(resp.data.getText());
     //if we can't access the URL/data
     if(!tempXml.load(resp.data)){

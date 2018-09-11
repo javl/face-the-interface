@@ -77,6 +77,8 @@ class ofApp : public ofBaseApp{
 		int stocksY;
 
 		int currentTemp;
+		bool tempFromInternet;
+		string city;
 		void urlResponse(ofHttpResponse & response);
 
 		ofTrueTypeFont fontTechnical;
@@ -116,6 +118,8 @@ class ofApp : public ofBaseApp{
 		string behavior_social;
 		string behavior_tax;
 		string behavior_moral;
+		string behavior_downloads;
+		string behavior_privacy_act;
 
 
 		// Video and face tracker
