@@ -56,7 +56,7 @@ void ofApp::setup(){
     substate = 0;
 
     //debug
-    // state = PATH_1_1;
+    state = PATH_2_4;
 
     path = 0;
     num_faces = 0;
@@ -826,7 +826,7 @@ void ofApp::update(){
 
             else if (substate == 2 && video.getIsMovieDone()){
                 video.close();
-                nextSubstate();
+                nextState();
             }
 
             break;
@@ -1448,9 +1448,7 @@ bool ofApp::voiceDone(){
 
 void ofApp::drawSmileStats(){
     ofPushMatrix();
-    // ofTranslate(0, ofGetHeight()-450);
     ofTranslate(0, 100);
-    // ofLog() << "mouseY: " << mouseY;
     for (int i = 0; i < 2; i++) {
         ofSetColor(255);
 
