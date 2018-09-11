@@ -886,7 +886,7 @@ void ofApp::update(){
                     playAudio("neutral_5da248ea.mp3");
                 }else{
                     //say forgettable
-                    playAudio("forgettable_5c4e8c01.mp3");
+                    playAudio("forgettable_8fae639e.mp3");
                 }
                 nextSubstate();
             }
