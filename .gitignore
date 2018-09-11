@@ -1,10 +1,10 @@
 src_backup
 obj
 bin/libmodex.so
-bin/magicmirror_v3
+bin/face-the-interface
 bin/data/shape_predictor_68_face_landmarks.dat
 /bin/libfmodex.so
 /openFrameworks.sublime-workspace
 /bin/data/new_audio/*
-/bin/magicmirror_v3.app
+/bin/face-the-interface.app
 .DS_Store

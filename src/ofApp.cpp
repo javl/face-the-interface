@@ -56,7 +56,7 @@ void ofApp::setup(){
     substate = 0;
 
     //debug
-    state = PATH_2_4;
+    // state = PATH_2_4;
 
     path = 0;
     num_faces = 0;

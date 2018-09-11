@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "magicmirror_v3.app"
-               BlueprintName = "magicmirror_v3"
-               ReferencedContainer = "container:magicmirror_v3.xcodeproj">
+               BuildableName = "face-the-interface.app"
+               BlueprintName = "face-the-interface"
+               ReferencedContainer = "container:face-the-interface.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "magicmirror_v3.app"
-            BlueprintName = "magicmirror_v3"
-            ReferencedContainer = "container:magicmirror_v3.xcodeproj">
+            BuildableName = "face-the-interface.app"
+            BlueprintName = "face-the-interface"
+            ReferencedContainer = "container:face-the-interface.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "magicmirror_v3.app"
-            BlueprintName = "magicmirror_v3"
-            ReferencedContainer = "container:magicmirror_v3.xcodeproj">
+            BuildableName = "face-the-interface.app"
+            BlueprintName = "face-the-interface"
+            ReferencedContainer = "container:face-the-interface.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "magicmirror_v3.app"
-            BlueprintName = "magicmirror_v3"
-            ReferencedContainer = "container:magicmirror_v3.xcodeproj">
+            BuildableName = "face-the-interface.app"
+            BlueprintName = "face-the-interface"
+            ReferencedContainer = "container:face-the-interface.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
