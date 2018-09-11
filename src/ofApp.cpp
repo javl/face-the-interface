@@ -582,7 +582,7 @@ void ofApp::update(){
             }
 
             else if (substate == 6 && voiceDone()){
-                video.load("video/counterDots.mp4");
+                video.load("audio/prerecorded/counterDots.mp4");
                 video.setLoopState(OF_LOOP_NONE);
                 video.setVolume(VIDEO_VOLUME);
                 video.play();
