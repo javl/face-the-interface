@@ -45,11 +45,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-    // city = "amsterdam";
     city = "den haag";
     currentTemp = 28;
-    tempFromInternet = true; // set to false to always use the preset temperature
-
+    tempFromInternet = true;
+    if( temperatureXML.loadFile("temperatureSettings.xml") ){
+        city             = temperatureXML.getValue("temperature:city", city);
+        currentTemp      = temperatureXML.getValue("temperature:value", currentTemp);
+        int fromInternet = temperatureXML.getValue("temperature:useInternet", 1);
+        fromInternet == 1 ? tempFromInternet = true : tempFromInternet = false;
+    }
 
     ofHideCursor();
     state = IDLE;

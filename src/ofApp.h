@@ -6,6 +6,7 @@
 #include "ofxBiquadFilter.h"
 #include "ofxTimer.h"
 #include "ofxSvg.h"
+#include "ofxXmlSettings.h"
 
 typedef dlib::matrix<double,40,1> sample_type;
 typedef dlib::radial_basis_kernel<sample_type> kernel_type;
@@ -130,6 +131,8 @@ class ofApp : public ofBaseApp{
 		float sneaky_w;
 		float sneaky_h;
 		float dataSendStart; // for the 'fallen' screen
+
+		ofxXmlSettings temperatureXML;
 
 		void takeSneakyImage();
 		void drawStocks();

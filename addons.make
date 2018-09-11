@@ -6,3 +6,4 @@ ofxGui
 ofxOpenCv
 ofxSvg
 ofxTimer
+ofxXmlSettings

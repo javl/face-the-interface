@@ -1,0 +1,6 @@
+<temperature>
+    <city>den haag</city>
+    <value>15</value>
+    <useInternet>1</useInternet>
+    <comment>for useInternet, set 1 for yes, 0 for no</comment>
+</temperature>
