@@ -9,3 +9,4 @@ bin/data/shape_predictor_68_face_landmarks.dat
 /bin/face-the-interface.app/*
 /bin/face-the-interfaceDebug.app/*
 .DS_Store
+face-the-interface.xcodeproj/project.xcworkspace/xcuserdata/
