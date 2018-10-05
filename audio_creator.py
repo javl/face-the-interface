@@ -17,11 +17,13 @@ add_hash = True
 # CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror/src/ofApp.cpp'
 # BACKUP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror/src_backup/ofApp.cpp'
 # AUDIO_PATH = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/magicmirror/bin/data/audio'
-CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/face-the-interface/src/ofApp.cpp'
+# CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/face-the-interface/src/ofApp.cpp'
 # CPP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/face-the-interface/convert.cpp'
 
+CPP_FILE = '/Users/face/Documents/of_v0.10.0_osx_release/apps/magicmirror/face-the-interface/src/ofApp.cpp'
+
 # BACKUP_FILE = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/face-the-interface/src_backup/ofApp.cpp'
-AUDIO_PATH = '/home/javl/Documents/of_v0.10.0_linux64gcc6_release/apps/magicmirror/face-the-interface/bin/data/audio'
+AUDIO_PATH = '/Users/face/Documents/of_v0.10.0_osx_release/apps/magicmirror/face-the-interface/bin/data/audio'
 
 with open(CPP_FILE) as f:
     original_lines = f.read().splitlines()
@@ -92,15 +94,18 @@ for i, line in enumerate(use_lines):
 
         filepath = path.join(AUDIO_PATH, filename)
         if not path.isfile(filepath):
-            command = '/usr/local/bin/gtts-cli "{}" --lang en-us --nocheck --output "{}"'.format(text, filepath)
+            # command = '/usr/local/bin/gtts-cli "{}" --lang nl-nl --nocheck --output "{}"'.format(text, filepath)
+            command = 'say -v Claire "{}" -o "{}"'.format(text, filepath.replace('.mp3', '.aiff'))	
+            subprocess.call([command], shell=True)
+            
+            command = 'lame -f {} {}'.format(filepath.replace('.mp3', '.aiff'), filepath)	
             subprocess.call([command], shell=True)
         use_lines[i] += "\n{}playAudio(\"{}\");".format(whitespace, filename, whitespace)
 
 if delete_old:
     print "Deleting unused audio files"
     for filename in os.listdir(AUDIO_PATH):
-        if filename.endswith(".mp3"):
-            if filename not in used_files:
+        if filename.endswith(".aiff") or (filename.endswith(".mp3") and filename not in used_files):
                 print "removing {}".format(filename)
                 os.remove(path.join(AUDIO_PATH, filename))
         # print(os.path.join(directory, filename))

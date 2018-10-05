@@ -87,7 +87,7 @@ class ofApp : public ofBaseApp{
 
 		bool wasSmiling;
 		int smileLoops;
-		bool usePath3;
+//        bool usePath3;
 
 		int path; // which path; 1, 2 or 3
 		int state;
